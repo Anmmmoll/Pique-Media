@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pique Media | The Future of Retention</title>
+    <style>
+        :root {
+            /* Apple Premium Light Theme Colors */
+            --bg-base: #f5f5f7;
+            --text-main: #1d1d1f;
+            --text-muted: #86868b;
+            --glass-bg: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.9);
+            --accent-red: #ff3b30;
+            --accent-blue: #0066cc;
+            --accent-gradient: linear-gradient(135deg, #ff3b30, #af52de, #0066cc);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* DYNAMIC LIVE BACKGROUND */
+        .ambient-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            background: #fbfbfd;
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.7;
+            animation: float 15s infinite ease-in-out alternate;
+        }
+
+        .orb-1 {
+            width: 600px; height: 600px;
+            background: rgba(255, 59, 48, 0.15);
+            top: -100px; left: -100px;
+            animation-duration: 20s;
+        }
+
+        .orb-2 {
+            width: 700px; height: 700px;
+            background: rgba(0, 102, 204, 0.15);
+            bottom: -200px; right: -100px;
+            animation-duration: 25s;
+            animation-direction: alternate-reverse;
+        }
+
+        .orb-3 {
+            width: 500px; height: 500px;
+            background: rgba(175, 82, 222, 0.15);
+            top: 30%; left: 30%;
+            animation-duration: 18s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(150px, 100px) scale(1.1); }
+            100% { transform: translate(-50px, 200px) scale(1.2); }
+        }
+
+        #scroll-wrapper {
+            transition
