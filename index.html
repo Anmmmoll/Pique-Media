@@ -224,7 +224,8 @@
         <ul class="nav-links">
             <li><a href="#services">Services</a></li>
             <li><a href="#portfolio">Our Work</a></li>
-            <li><a href="#matchmaker">Find Editor</a></li> <li><a href="#contact">Contact</a></li>
+            <li><a href="#matchmaker">Find Editor</a></li>
+            <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
 
@@ -427,7 +428,7 @@
                 <div id="emailCaptureBox" style="display: none; margin-top: 40px; padding-top: 40px; border-top: 1px solid rgba(0,0,0,0.1);">
                     <h3 style="margin-bottom: 20px; font-size: 1.8rem;">Confirm Allocation</h3>
                     <form action="https://api.web3forms.com/submit" method="POST" style="display: flex; flex-direction: column; gap: 15px; align-items: center;">
-                        <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_ACCESS_KEY_HERE">
+                        <input type="hidden" name="access_key" value="08b8a178-8bce-4a78-a3f3-4f248b5fec6d">
                         
                         <input type="hidden" name="subject" value="URGENT: New Client Selected an Editor!">
                         <input type="hidden" name="Selected_Editor" id="formEditorName" value="">
@@ -445,14 +446,17 @@
                 <h2 class="section-title" style="font-size: 3.5rem;">Initialize Protocol</h2>
                 <p class="section-subtitle" style="margin-bottom: 40px;">Drop your coordinates or connect across our channels to deploy your campaign immediately.</p>
                 
-                <form style="display: flex; flex-direction: column; gap: 20px; max-width: 500px; margin: 0 auto 40px auto;">
+                <form action="https://api.web3forms.com/submit" method="POST" style="display: flex; flex-direction: column; gap: 20px; max-width: 500px; margin: 0 auto 40px auto;">
+                    <input type="hidden" name="access_key" value="08b8a178-8bce-4a78-a3f3-4f248b5fec6d">
+                    <input type="hidden" name="subject" value="General Inquiry from Pique Media">
+                    
                     <div class="input-group">
                         <label>Email Address</label>
-                        <input type="email" placeholder="name@company.com" required class="apple-input">
+                        <input type="email" name="Email" placeholder="name@company.com" required class="apple-input">
                     </div>
                     <div class="input-group">
                         <label>Phone / WhatsApp Number</label>
-                        <input type="tel" placeholder="+91 XXXXX XXXXX" required class="apple-input">
+                        <input type="tel" name="Phone" placeholder="+91 XXXXX XXXXX" required class="apple-input">
                     </div>
                     <button type="submit" class="btn-primary" style="width: 100%; border: none; cursor: pointer; padding: 18px; margin-top: 10px;">Deploy Campaign</button>
                 </form>
