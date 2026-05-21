@@ -196,4 +196,350 @@
         .social-btn:hover { background: var(--text-main); color: #fff; transform: translateY(-3px); }
 
         /* MATCHMAKER CSS */
-        .match-container { max-width: 9
+        .match-container { max-width: 900px; width: 100%; text-align: center; padding: 60px 40px; margin: 0 auto; }
+        .editor-result-card { display: flex; flex-direction: column; align-items: center; padding: 30px; border-radius: 20px; background: #fff; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-top: 20px; width: 100%; max-width: 280px; }
+        .editor-avatar { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 15px; border: 3px solid var(--accent-blue); }
+        .tag-badge { background: var(--accent-blue); color: #fff; padding: 5px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 700; margin-bottom: 10px; }
+
+        @media (max-width: 768px) {
+            #home h1 { font-size: 3.5rem; letter-spacing: -1.5px; }
+            .section-title { font-size: 3rem; }
+            .nav-links { display: none; }
+            section { padding: 120px 5% 80px 5%; }
+            .bento-card[style*="grid-column: span 100%"], .bento-card[style*="grid-column: span 2"] { grid-column: span 1 !important; }
+            .thumb-grid-top, .thumb-grid-bottom { grid-template-columns: 1fr; gap: 15px;}
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <nav class="glass" id="navbar">
+        <div class="logo">PIQUE<span>MEDIA</span></div>
+        <ul class="nav-links">
+            <li><a href="#services">Services</a></li>
+            <li><a href="#portfolio">Our Work</a></li>
+            <li><a href="#matchmaker">Find Editor</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div id="scroll-wrapper">
+        
+        <section id="home">
+            <div class="hero-badge">Validation: First Revenue Generated</div>
+            <h1>The Future of <br>Engagement.</h1>
+            <p class="section-subtitle">We build bulletproof retention systems. Pique Media engineers elite motion graphics, advanced editing, and structural assets that scale organic reach natively.</p>
+            <a href="#portfolio" class="btn-primary">See The Proof</a>
+        </section>
+
+        <section id="services">
+            <h2 class="section-title">The Master Blueprint</h2>
+            <p class="section-subtitle">End-to-end digital dominance. From deep strategy to frame-by-frame visual engineering, here is our complete capability stack.</p>
+            
+            <div class="bento-grid">
+                <div class="glass bento-card">
+                    <div class="bento-icon">📊</div>
+                    <h3 class="bento-title">Growth & Management</h3>
+                    <p class="bento-desc">Complete takeover of your digital presence. We handle the algorithm so you can handle the business.</p>
+                    <div class="skill-cloud">
+                        <span class="skill-tag">Channel Management</span>
+                        <span class="skill-tag">Page Management</span>
+                        <span class="skill-tag">Advanced SEO</span>
+                        <span class="skill-tag">Viral Script Writing</span>
+                        <span class="skill-tag">Content Strategy</span>
+                        <span class="skill-tag">Analytics Auditing</span>
+                    </div>
+                </div>
+
+                <div class="glass bento-card" style="grid-column: span 2;">
+                    <div class="bento-icon">🎬</div>
+                    <h3 class="bento-title">Elite Post-Production</h3>
+                    <p class="bento-desc">Cinematic retention engineering. Whether it's a high-ticket SaaS breakdown or a massive gaming vlog, we make it impossible to click away.</p>
+                    <div class="skill-cloud">
+                        <span class="skill-tag">Motion Graphics</span>
+                        <span class="skill-tag">SaaS UI Animation</span>
+                        <span class="skill-tag">Color Grading</span>
+                        <span class="skill-tag">Rotoscoping & Masking</span>
+                        <span class="skill-tag">3D Camera Tracking</span>
+                        <span class="skill-tag">Speed Ramping</span>
+                        <span class="skill-tag">Keyframing</span>
+                        <span class="skill-tag">Green Screen/Chroma Key</span>
+                        <span class="skill-tag">Dynamic Subtitling</span>
+                        <span class="skill-tag">Multicam Sync</span>
+                        <span class="skill-tag">Vlog & Gaming Cuts</span>
+                        <span class="skill-tag">AI Generated Videos</span>
+                        <span class="skill-tag">Documentary Flow</span>
+                        <span class="skill-tag">High-Ticket VSLs</span>
+                        <span class="skill-tag">Short-form/Reels</span>
+                    </div>
+                </div>
+
+                <div class="glass bento-card">
+                    <div class="bento-icon">🎨</div>
+                    <h3 class="bento-title">Visual & Brand Identity</h3>
+                    <p class="bento-desc">Click-through rates that break dashboards. We design visual hooks that demand attention.</p>
+                    <div class="skill-cloud">
+                        <span class="skill-tag">High-CTR Thumbnails</span>
+                        <span class="skill-tag">Logo Design</span>
+                        <span class="skill-tag">Channel Banners</span>
+                        <span class="skill-tag">Social Media Kits</span>
+                        <span class="skill-tag">Vector Art</span>
+                        <span class="skill-tag">Typography Integration</span>
+                        <span class="skill-tag">UI/UX Mockups</span>
+                        <span class="skill-tag">Brand Collateral</span>
+                    </div>
+                </div>
+
+                <div class="glass bento-card">
+                    <div class="bento-icon">🎧</div>
+                    <h3 class="bento-title">Immersive Sound Design</h3>
+                    <p class="bento-desc">Audio is 50% of the experience. We build custom soundscapes that trigger psychological engagement.</p>
+                    <div class="skill-cloud">
+                        <span class="skill-tag">Foley Audio</span>
+                        <span class="skill-tag">Cinematic SFX Layering</span>
+                        <span class="skill-tag">Voiceover Mastering</span>
+                        <span class="skill-tag">Noise Reduction</span>
+                        <span class="skill-tag">EQ & Audio Mixing</span>
+                        <span class="skill-tag">Spatial Panning</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="portfolio">
+            <h2 class="section-title">Our Masterpieces</h2>
+            <p class="section-subtitle">Curated retention assets engineered by Pique Media. High-converting layouts, SaaS motion, and viral hooks.</p>
+            
+            <div class="bento-grid">
+                <div class="glass bento-card">
+                    <div class="video-wrapper">
+                        <iframe src="https://drive.google.com/file/d/17x3DeO9YCNBGEraetthNoURAsJcCjQkNtIskSzrRqmg/preview" width="100%" height="100%" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="width: 100%; height: 100%; border: none; display: block;"></iframe>
+                    </div>
+                    <h3 class="bento-title">SaaS Animation 1</h3>
+                    <span style="color: var(--accent-blue); font-weight: 700; font-size: 0.9rem;">B2B Conversion Focus</span>
+                </div>
+
+                <div class="glass bento-card">
+                    <div class="video-wrapper">
+                        <iframe src="https://drive.google.com/file/d/1ah9nA9Aa0WaTA7UTWC1yYI9hl6yWhIBj/preview" width="100%" height="100%" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="width: 100%; height: 100%; border: none; display: block;"></iframe>
+                    </div>
+                    <h3 class="bento-title">SaaS Animation 2</h3>
+                    <span style="color: var(--accent-blue); font-weight: 700; font-size: 0.9rem;">Dynamic UI Tracking</span>
+                </div>
+
+                <div class="glass bento-card">
+                    <div class="video-wrapper">
+                        <iframe src="https://drive.google.com/file/d/1jsBuSPSsiLPh0k81XyIzVNIkvkl6dnY-/preview" width="100%" height="100%" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="width: 100%; height: 100%; border: none; display: block;"></iframe>
+                    </div>
+                    <h3 class="bento-title">Cartoon & 2D Motion</h3>
+                    <span style="color: var(--accent-blue); font-weight: 700; font-size: 0.9rem;">Character Storytelling</span>
+                </div>
+            </div>
+
+            <div class="reels-grid">
+                <div class="glass bento-card">
+                    <div class="video-wrapper vertical">
+                        <iframe src="https://drive.google.com/file/d/1ly-94aKNYbCdTBxN30iq1fuMF4ypUe_X/preview" width="100%" height="100%" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="width: 100%; height: 100%; border: none; display: block;"></iframe>
+                    </div>
+                    <h3 class="bento-title">Viral Short 1</h3>
+                    <p class="bento-desc">High-retention mobile pacing.</p>
+                </div>
+
+                <div class="glass bento-card">
+                    <div class="video-wrapper vertical">
+                        <iframe src="https://drive.google.com/file/d/1x12hUtzKnbexOyOsWrnSfzwXX8fGDiXg/preview" width="100%" height="100%" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="width: 100%; height: 100%; border: none; display: block;"></iframe>
+                    </div>
+                    <h3 class="bento-title">Viral Short 2</h3>
+                    <p class="bento-desc">Multi-hook transitions.</p>
+                </div>
+
+                <div class="glass bento-card">
+                    <div class="video-wrapper vertical">
+                        <iframe src="https://drive.google.com/file/d/1UgUD2Bc4u0zii_qkLdxrrtw6PPEVliBS/preview" width="100%" height="100%" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen style="width: 100%; height: 100%; border: none; display: block;"></iframe>
+                    </div>
+                    <h3 class="bento-title">Viral Short 3</h3>
+                    <p class="bento-desc">Dynamic subtitling.</p>
+                </div>
+            </div>
+
+            <div class="bento-grid" style="margin-top: 30px;">
+                <div class="glass bento-card" style="grid-column: span 100%; text-align: center;">
+                    <div class="video-wrapper" style="max-height: 700px;">
+                        <iframe src="https://www.youtube.com/embed/-oKvblo_YQw" width="100%" height="100%" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="width: 100%; height: 100%; border: none; display: block;"></iframe>
+                    </div>
+                    <h3 class="bento-title" style="font-size: 2.5rem;">Cinematic Masterpiece</h3>
+                    <span style="color: var(--accent-red); font-weight: 700; font-size: 1.1rem; display: block; margin-bottom: 15px;">Long-Form / Documentary Cut</span>
+                    <p class="bento-desc" style="max-width: 800px; margin: 0 auto;">Our flagship long-form retention asset. Engineered with deep soundscapes, advanced color grading, and a narrative flow designed to convert cold traffic into high-ticket clients.</p>
+                </div>
+            </div>
+
+            <div class="bento-grid" style="margin-top: 30px;">
+                <div class="glass bento-card" style="grid-column: span 100%;">
+                    <h3 class="bento-title" style="font-size: 2.5rem; text-align: center;">High-CTR Thumbnails</h3>
+                    <p class="section-subtitle" style="margin-bottom: 30px;">Visual hooks designed to break the scroll and maximize click-through rates.</p>
+                    
+                    <div class="thumb-grid-top">
+                        <div class="thumb-wrapper">
+                            <img src="thumb1.jpg" alt="Thumbnail 1">
+                        </div>
+                        <div class="thumb-wrapper">
+                            <img src="thumb2.jpg" alt="Thumbnail 2">
+                        </div>
+                    </div>
+                    
+                    <div class="thumb-grid-bottom">
+                        <div class="thumb-wrapper">
+                            <img src="thumb3.jpg" alt="Thumbnail 3">
+                        </div>
+                        <div class="thumb-wrapper">
+                            <img src="thumb4.jpg" alt="Thumbnail 4">
+                        </div>
+                        <div class="thumb-wrapper">
+                            <img src="thumb5.jpg" alt="Thumbnail 5">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="matchmaker">
+            <div class="glass match-container">
+                <h2 class="section-title" style="font-size: 3rem;">AI Editor Routing</h2>
+                <p class="section-subtitle">Tell us what you need, and our system will match you with the perfect specialized operator from our team.</p>
+                
+                <select id="clientRequirement" class="apple-input" style="font-weight: 600; cursor: pointer; text-align: center; max-width: 500px; margin: 0 auto 20px auto;">
+                    <option value="none" selected disabled>Select your video requirement...</option>
+                    <option value="saas">SaaS & UI Product Walkthroughs</option>
+                    <option value="shorts">High-Retention Viral Shorts/Reels</option>
+                    <option value="vsl">Cinematic Documentary / VSLs</option>
+                    <option value="gaming">Vlog & Gaming Cuts</option>
+                </select>
+                <br>
+                <button onclick="findMatch()" class="btn-primary" style="padding: 15px 40px; margin-bottom: 40px;">Scan Database</button>
+
+                <div id="editorResults" style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;"></div>
+
+                <div id="emailCaptureBox" style="display: none; margin-top: 40px; padding-top: 40px; border-top: 1px solid rgba(0,0,0,0.1);">
+                    <h3 style="margin-bottom: 20px; font-size: 1.8rem;">Confirm Allocation</h3>
+                    <form action="https://api.web3forms.com/submit" method="POST" style="display: flex; flex-direction: column; gap: 15px; align-items: center;">
+                        <input type="hidden" name="access_key" value="08b8a178-8bce-4a78-a3f3-4f248b5fec6d">
+                        
+                        <input type="hidden" name="subject" value="URGENT: New Client Selected an Editor!">
+                        <input type="hidden" name="Selected_Editor" id="formEditorName" value="">
+                        <input type="hidden" name="Client_Requirement" id="formClientReq" value="">
+                        
+                        <input type="email" name="Client_Email" placeholder="Enter your Email" class="apple-input" style="max-width: 400px;" required>
+                        <input type="text" name="Client_Company" placeholder="Your Name or Company" class="apple-input" style="max-width: 400px;" required>
+                        <button type="submit" class="btn-primary" style="width: 100%; max-width: 400px;">Dispatch to Agency HQ</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+        <section id="contact">
+            <div class="glass bento-card" style="text-align: center; max-width: 800px; width: 100%; padding: 60px 40px;">
+                <h2 class="section-title" style="font-size: 3.5rem;">Initialize Protocol</h2>
+                <p class="section-subtitle" style="margin-bottom: 40px;">Drop your coordinates or connect across our channels to deploy your campaign immediately.</p>
+                
+                <form action="https://api.web3forms.com/submit" method="POST" style="display: flex; flex-direction: column; gap: 20px; max-width: 500px; margin: 0 auto 40px auto;">
+                    <input type="hidden" name="access_key" value="08b8a178-8bce-4a78-a3f3-4f248b5fec6d">
+                    <input type="hidden" name="subject" value="General Inquiry from Pique Media">
+                    
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <input type="email" name="Email" placeholder="name@company.com" required class="apple-input">
+                    </div>
+                    <div class="input-group">
+                        <label>Phone / WhatsApp Number</label>
+                        <input type="tel" name="Phone" placeholder="+91 XXXXX XXXXX" required class="apple-input">
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%; border: none; cursor: pointer; padding: 18px; margin-top: 10px;">Deploy Campaign</button>
+                </form>
+
+                <div style="font-weight: 700; color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 25px;">Or Instant Connect</div>
+
+                <div class="social-grid">
+                    <a href="#" class="social-btn">LinkedIn Direct</a>
+                    <a href="#" class="social-btn">Instagram HQ</a>
+                    <a href="#" class="social-btn">Discord Node</a>
+                </div>
+            </div>
+        </section>
+
+        <footer style="text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.95rem; font-weight: 500;">
+            &copy; 2026 Pique Media. Built on Apple-grade logic.
+        </footer>
+    </div>
+
+    <script>
+        // ---------------------------------------------
+        // 1. APPLE SCROLL BLUR LOGIC
+        // ---------------------------------------------
+        const scrollWrapper = document.getElementById('scroll-wrapper');
+        let scrollTimeout;
+
+        window.addEventListener('scroll', () => {
+            scrollWrapper.style.transition = 'none';
+            scrollWrapper.style.filter = 'blur(2px)';
+            
+            clearTimeout(scrollTimeout);
+            
+            scrollTimeout = setTimeout(() => {
+                scrollWrapper.style.transition = 'filter 0.4s ease-out';
+                scrollWrapper.style.filter = 'blur(0px)';
+            }, 80);
+        });
+
+        // ---------------------------------------------
+        // 2. MATCHMAKER SYSTEM LOGIC
+        // ---------------------------------------------
+        const editorDB = [
+            { id: 1, name: "Ritesh", tags: ["saas", "ui"], exp: "SaaS Motion Expert", img: "https://i.ibb.co/b3bZg4z/image-82b76a.jpg" },
+            { id: 2, name: "Parth", tags: ["shorts", "gaming"], exp: "High-Retention Master", img: "https://i.ibb.co/YyKmxGZ/image-82b44a.jpg" },
+            { id: 3, name: "Aamir", tags: ["vsl", "documentary"], exp: "Cinematic Color & VSL", img: "https://i.ibb.co/VvzK2B5/image-82b3b2.jpg" }
+        ];
+
+        function findMatch() {
+            const req = document.getElementById('clientRequirement').value;
+            const resultsBox = document.getElementById('editorResults');
+            
+            if(req === "none") { alert("Please select a video requirement first."); return; }
+
+            resultsBox.innerHTML = "";
+            document.getElementById('emailCaptureBox').style.display = "none";
+
+            const matchedEditors = editorDB.filter(editor => editor.tags.includes(req));
+
+            if(matchedEditors.length > 0) {
+                matchedEditors.forEach(ed => {
+                    resultsBox.innerHTML += `
+                        <div class="editor-result-card">
+                            <span class="tag-badge">98% Match</span>
+                            <img src="${ed.img}" class="editor-avatar">
+                            <h3 style="margin-bottom: 5px;">${ed.name}</h3>
+                            <p style="font-size: 0.9rem; color: #86868b; margin-bottom: 15px;">${ed.exp}</p>
+                            <button onclick="selectEditor('${ed.name}', '${req}')" class="btn-primary" style="padding: 10px 20px; font-size: 0.9rem;">Select Editor</button>
+                        </div>
+                    `;
+                });
+            } else {
+                resultsBox.innerHTML = "<p style='font-weight:600; color:var(--text-muted);'>Scanning... No exact match found right now, but our Lead Director will handle this.</p>";
+            }
+        }
+
+        function selectEditor(name, requirement) {
+            document.getElementById('formEditorName').value = name;
+            document.getElementById('formClientReq').value = requirement;
+            
+            const emailBox = document.getElementById('emailCaptureBox');
+            emailBox.style.display = "block";
+            emailBox.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
