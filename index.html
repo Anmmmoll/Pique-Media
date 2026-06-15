@@ -5,10 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pique Media | The Future of Retention</title>
     
-    <!-- Three.js Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- GLTFLoader -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     
     <style>
         :root {
@@ -98,7 +96,7 @@
         /* 3D Fish Container */
         #interactive-3d-container {
             width: 100%;
-            height: 350px;
+            height: 400px;
             max-width: 800px;
             margin: 0 auto 10px auto;
             border-radius: 30px;
@@ -107,19 +105,6 @@
             z-index: 1;
         }
         #interactive-3d-container:active { cursor: grabbing; }
-
-        /* Loading Text */
-        #loading-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-weight: 600;
-            color: var(--accent-blue);
-            font-size: 1.2rem;
-            animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
 
         /* Bento Grid */
         .bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; width: 100%; max-width: 1200px; }
@@ -197,10 +182,7 @@
             <div class="hero-badge">Validation: First Revenue Generated</div>
             <h1>The Future of <br>Engagement.</h1>
 
-            <!-- 3D FISH ANIMATION CONTAINER -->
-            <div id="interactive-3d-container">
-                <div id="loading-text">Loading 3D Model...</div>
-            </div>
+            <div id="interactive-3d-container"></div>
             
             <p class="section-subtitle">We build bulletproof retention systems. Pique Media engineers elite motion graphics, advanced editing, and structural assets that scale organic reach natively.</p>
             <a href="#portfolio" class="btn-primary">See The Proof</a>
@@ -443,7 +425,7 @@
     </div>
 
     <script>
-        // Scroll Logic
+        // Scroll Wrapper Blur Logic
         const scrollWrapper = document.getElementById('scroll-wrapper');
         let scrollTimeout;
         window.addEventListener('scroll', () => {
@@ -488,93 +470,137 @@
         }
 
         // ==========================================
-        // 3. FIXED 3D ANIMATION LOGIC (WITH CDN + FALLBACK)
+        // 3. PURE CODE CARTOON FISH & AQUARIUM
         // ==========================================
         const container3D = document.getElementById('interactive-3d-container');
-        const loadingText = document.getElementById('loading-text');
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, container3D.clientWidth / container3D.clientHeight, 0.1, 1000);
         
-        const scene3D = new THREE.Scene();
-        const camera3D = new THREE.PerspectiveCamera(50, container3D.clientWidth / container3D.clientHeight, 0.1, 1000);
-        
-        const renderer3D = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-        renderer3D.setSize(container3D.clientWidth, container3D.clientHeight);
-        renderer3D.setPixelRatio(window.devicePixelRatio);
-        container3D.appendChild(renderer3D.domElement);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer.setSize(container3D.clientWidth, container3D.clientHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        container3D.appendChild(renderer.domElement);
 
-        // Lighting
-        const ambientLight = new THREE.AmbientLight(0xffffff, 2);
-        scene3D.add(ambientLight);
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 3);
-        directionalLight.position.set(10, 10, 10);
-        scene3D.add(directionalLight);
+        // Lights
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
+        scene.add(ambientLight);
+        const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+        dirLight.position.set(5, 5, 5);
+        scene.add(dirLight);
 
-        let activeModel;
-        const loader = new THREE.GLTFLoader();
-        
-        // Naya proxy link jisme CORS error nahi aayega
-        const fishUrl = 'https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models@master/2.0/BarramundiFish/glTF-Binary/BarramundiFish.glb';
-
-        loader.load(fishUrl, function(gltf) {
-            activeModel = gltf.scene;
-            activeModel.scale.set(8, 8, 8); 
-            activeModel.position.set(0, 0, 0);
-            activeModel.rotation.y = -Math.PI / 2;
-            scene3D.add(activeModel);
-            if (loadingText) loadingText.style.display = 'none';
-        }, undefined, function(error) {
-            console.error('Bhai, machli load nahi ho rahi CORS ki vajah se.', error);
-            if (loadingText) loadingText.style.display = 'none';
-            
-            // Yahan Fallback 3D Shape add ho rahi hai agar model load na ho paye
-            const fallbackGeo = new THREE.TorusKnotGeometry(1, 0.3, 100, 16);
-            const fallbackMat = new THREE.MeshPhysicalMaterial({ color: 0x0066cc, wireframe: true });
-            activeModel = new THREE.Mesh(fallbackGeo, fallbackMat);
-            scene3D.add(activeModel);
+        // --- 1. AQUARIUM BOWL (GLASS) ---
+        const bowlGroup = new THREE.Group();
+        const bowlGeo = new THREE.SphereGeometry(1.6, 32, 32, 0, Math.PI * 2, 0, Math.PI * 0.7);
+        const bowlMat = new THREE.MeshPhysicalMaterial({
+            color: 0xccffff, transmission: 0.9, opacity: 1, transparent: true,
+            roughness: 0.1, side: THREE.DoubleSide
         });
+        const bowl = new THREE.Mesh(bowlGeo, bowlMat);
+        bowl.rotation.x = Math.PI; // Opening facing up
+        
+        // Water inside the bowl
+        const waterGeo = new THREE.CylinderGeometry(1.4, 1.4, 1.2, 32);
+        const waterMat = new THREE.MeshPhysicalMaterial({ color: 0x44aaff, transmission: 0.8, transparent: true });
+        const water = new THREE.Mesh(waterGeo, waterMat);
+        water.position.y = 0.5;
 
-        camera3D.position.z = 5;
+        bowlGroup.add(bowl);
+        bowlGroup.add(water);
+        bowlGroup.position.y = -1.8; // Set at the bottom
+        scene.add(bowlGroup);
 
-        // Mouse Tracker
-        let mouseX = 0;
-        let mouseY = 0;
-        let targetX = 0;
-        let targetY = 0;
+        // --- 2. CUTE CARTOON FISH ---
+        const fishWrapper = new THREE.Group(); // Handles GSAP drop
+        const fish = new THREE.Group(); // Handles swimming animation
+        
+        // Fish Body (Orange)
+        const bodyGeo = new THREE.CapsuleGeometry(0.4, 0.8, 16, 16);
+        const bodyMat = new THREE.MeshStandardMaterial({ color: 0xff9900, roughness: 0.4 });
+        const body = new THREE.Mesh(bodyGeo, bodyMat);
+        body.rotation.z = Math.PI / 2;
+        fish.add(body);
+
+        // Fish Tail (Red-Orange)
+        const tailGeo = new THREE.ConeGeometry(0.3, 0.6, 3);
+        const tailMat = new THREE.MeshStandardMaterial({ color: 0xff4400 });
+        const tail = new THREE.Mesh(tailGeo, tailMat);
+        tail.position.x = -0.7;
+        tail.rotation.z = -Math.PI / 2;
+        fish.add(tail);
+
+        // Fish Eyes
+        const eyeGeo = new THREE.SphereGeometry(0.1, 16, 16);
+        const eyeMat = new THREE.MeshBasicMaterial({ color: 0xffffff });
+        const pupilGeo = new THREE.SphereGeometry(0.05, 16, 16);
+        const pupilMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
+        
+        const rightEye = new THREE.Mesh(eyeGeo, eyeMat); rightEye.position.set(0.4, 0.15, 0.25);
+        const rightPupil = new THREE.Mesh(pupilGeo, pupilMat); rightPupil.position.set(0.45, 0.15, 0.3);
+        const leftEye = new THREE.Mesh(eyeGeo, eyeMat); leftEye.position.set(0.4, 0.15, -0.25);
+        const leftPupil = new THREE.Mesh(pupilGeo, pupilMat); leftPupil.position.set(0.45, 0.15, -0.3);
+        
+        fish.add(rightEye, rightPupil, leftEye, leftPupil);
+        
+        fishWrapper.add(fish);
+        fishWrapper.position.y = 1.8; // Starts floating high above
+        scene.add(fishWrapper);
+
+        camera.position.z = 6;
+
+        // --- MOUSE TRACKING ---
+        let mouseX = 0, mouseY = 0, targetX = 0, targetY = 0;
         const windowHalfX = window.innerWidth / 2;
         const windowHalfY = window.innerHeight / 2;
-
         document.addEventListener('mousemove', (event) => {
             mouseX = (event.clientX - windowHalfX);
             mouseY = (event.clientY - windowHalfY);
         });
 
-        // Animation Loop
-        function animate3D() {
-            requestAnimationFrame(animate3D);
+        // --- SCROLL TO DROP ANIMATION (GSAP) ---
+        let hasDropped = false;
+        window.addEventListener('scroll', () => {
+            let scrollPosition = window.scrollY;
             
-            if (activeModel) {
-                targetX = mouseX * 0.001;
-                targetY = mouseY * 0.001;
-
-                activeModel.rotation.x += 0.05 * (targetY - activeModel.rotation.x);
-                // Checking if it's the fallback shape or the fish to rotate correctly
-                if(activeModel.type === "Group") {
-                    activeModel.rotation.y += 0.05 * (targetX - (Math.PI/2) - activeModel.rotation.y);
-                    activeModel.position.y = Math.sin(Date.now() * 0.002) * 0.2;
-                } else {
-                    activeModel.rotation.y += 0.05 * (targetX - activeModel.rotation.y);
-                }
+            // Jab thoda niche scroll karega (jaise 2-3 baar), tab giregi
+            if (scrollPosition > 150 && !hasDropped) {
+                hasDropped = true;
+                // Fish drops into the bowl
+                gsap.to(fishWrapper.position, { y: -1.2, duration: 1.5, ease: "bounce.out" });
+                gsap.to(fishWrapper.rotation, { z: Math.PI / 8, duration: 1 }); // slight splash tilt
+            } else if (scrollPosition <= 50 && hasDropped) {
+                hasDropped = false;
+                // Fish floats back up when scrolled back to very top
+                gsap.to(fishWrapper.position, { y: 1.8, duration: 1.2, ease: "power2.out" });
+                gsap.to(fishWrapper.rotation, { z: 0, duration: 1 });
             }
+        });
 
-            renderer3D.render(scene3D, camera3D);
+        // --- RENDER LOOP ---
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            targetX = mouseX * 0.001;
+            targetY = mouseY * 0.001;
+
+            // Machli mouse ko dekhegi
+            fish.rotation.x += 0.05 * (targetY - fish.rotation.x);
+            fish.rotation.y += 0.05 * (targetX - fish.rotation.y);
+            
+            // Machli continuous swim (float) karti rahegi
+            fish.position.y = Math.sin(Date.now() * 0.003) * 0.1;
+            // Tail hilne ka effect
+            tail.rotation.y = Math.sin(Date.now() * 0.01) * 0.3;
+
+            renderer.render(scene, camera);
         }
-        animate3D();
+        animate();
 
         // Responsive Canvas
         window.addEventListener('resize', () => {
             if(container3D) {
-                camera3D.aspect = container3D.clientWidth / container3D.clientHeight;
-                camera3D.updateProjectionMatrix();
-                renderer3D.setSize(container3D.clientWidth, container3D.clientHeight);
+                camera.aspect = container3D.clientWidth / container3D.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container3D.clientWidth, container3D.clientHeight);
             }
         });
     </script>
