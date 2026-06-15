@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pique Media | The Future of Retention</title>
     
+    <!-- Three.js Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- GLTFLoader -->
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
     
     <style>
@@ -93,7 +95,7 @@
         .btn-primary { background: var(--text-main); color: #fff; padding: 20px 45px; font-size: 1.15rem; font-weight: 600; border-radius: 40px; text-decoration: none; display: inline-block; transition: all 0.3s; position: relative; z-index: 2; }
         .btn-primary:hover { transform: scale(1.04); box-shadow: 0 15px 30px rgba(0,0,0,0.15); background: #000; }
 
-        /* ADDED: 3D Fish Container */
+        /* 3D Fish Container */
         #interactive-3d-container {
             width: 100%;
             height: 350px;
@@ -102,7 +104,7 @@
             border-radius: 30px;
             cursor: grab;
             position: relative;
-            z-index: 1; /* text ke peeche/saath blend hone ke liye */
+            z-index: 1;
         }
         #interactive-3d-container:active { cursor: grabbing; }
 
@@ -195,8 +197,9 @@
             <div class="hero-badge">Validation: First Revenue Generated</div>
             <h1>The Future of <br>Engagement.</h1>
 
+            <!-- 3D FISH ANIMATION CONTAINER -->
             <div id="interactive-3d-container">
-                <div id="loading-text">Loading 3D Fish...</div>
+                <div id="loading-text">Loading 3D Model...</div>
             </div>
             
             <p class="section-subtitle">We build bulletproof retention systems. Pique Media engineers elite motion graphics, advanced editing, and structural assets that scale organic reach natively.</p>
@@ -475,4 +478,105 @@
                             <img src="${ed.img}" class="editor-avatar">
                             <h3 style="margin-bottom: 5px;">${ed.name}</h3>
                             <p style="font-size: 0.9rem; color: #86868b; margin-bottom: 15px;">${ed.exp}</p>
-                            <button onclick="select
+                            <button onclick="selectEditor('${ed.name}', '${req}')" class="btn-primary" style="padding: 10px 20px; font-size: 0.9rem;">Select Editor</button>
+                        </div>
+                    `;
+                });
+            } else {
+                resultsBox.innerHTML = "<p style='font-weight:600; color:var(--text-muted);'>Scanning... No exact match found right now, but our Lead Director will handle this.</p>";
+            }
+        }
+
+        // ==========================================
+        // 3. FIXED 3D ANIMATION LOGIC (WITH CDN + FALLBACK)
+        // ==========================================
+        const container3D = document.getElementById('interactive-3d-container');
+        const loadingText = document.getElementById('loading-text');
+        
+        const scene3D = new THREE.Scene();
+        const camera3D = new THREE.PerspectiveCamera(50, container3D.clientWidth / container3D.clientHeight, 0.1, 1000);
+        
+        const renderer3D = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        renderer3D.setSize(container3D.clientWidth, container3D.clientHeight);
+        renderer3D.setPixelRatio(window.devicePixelRatio);
+        container3D.appendChild(renderer3D.domElement);
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 2);
+        scene3D.add(ambientLight);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 3);
+        directionalLight.position.set(10, 10, 10);
+        scene3D.add(directionalLight);
+
+        let activeModel;
+        const loader = new THREE.GLTFLoader();
+        
+        // Naya proxy link jisme CORS error nahi aayega
+        const fishUrl = 'https://cdn.jsdelivr.net/gh/KhronosGroup/glTF-Sample-Models@master/2.0/BarramundiFish/glTF-Binary/BarramundiFish.glb';
+
+        loader.load(fishUrl, function(gltf) {
+            activeModel = gltf.scene;
+            activeModel.scale.set(8, 8, 8); 
+            activeModel.position.set(0, 0, 0);
+            activeModel.rotation.y = -Math.PI / 2;
+            scene3D.add(activeModel);
+            if (loadingText) loadingText.style.display = 'none';
+        }, undefined, function(error) {
+            console.error('Bhai, machli load nahi ho rahi CORS ki vajah se.', error);
+            if (loadingText) loadingText.style.display = 'none';
+            
+            // Yahan Fallback 3D Shape add ho rahi hai agar model load na ho paye
+            const fallbackGeo = new THREE.TorusKnotGeometry(1, 0.3, 100, 16);
+            const fallbackMat = new THREE.MeshPhysicalMaterial({ color: 0x0066cc, wireframe: true });
+            activeModel = new THREE.Mesh(fallbackGeo, fallbackMat);
+            scene3D.add(activeModel);
+        });
+
+        camera3D.position.z = 5;
+
+        // Mouse Tracker
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetX = 0;
+        let targetY = 0;
+        const windowHalfX = window.innerWidth / 2;
+        const windowHalfY = window.innerHeight / 2;
+
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX - windowHalfX);
+            mouseY = (event.clientY - windowHalfY);
+        });
+
+        // Animation Loop
+        function animate3D() {
+            requestAnimationFrame(animate3D);
+            
+            if (activeModel) {
+                targetX = mouseX * 0.001;
+                targetY = mouseY * 0.001;
+
+                activeModel.rotation.x += 0.05 * (targetY - activeModel.rotation.x);
+                // Checking if it's the fallback shape or the fish to rotate correctly
+                if(activeModel.type === "Group") {
+                    activeModel.rotation.y += 0.05 * (targetX - (Math.PI/2) - activeModel.rotation.y);
+                    activeModel.position.y = Math.sin(Date.now() * 0.002) * 0.2;
+                } else {
+                    activeModel.rotation.y += 0.05 * (targetX - activeModel.rotation.y);
+                }
+            }
+
+            renderer3D.render(scene3D, camera3D);
+        }
+        animate3D();
+
+        // Responsive Canvas
+        window.addEventListener('resize', () => {
+            if(container3D) {
+                camera3D.aspect = container3D.clientWidth / container3D.clientHeight;
+                camera3D.updateProjectionMatrix();
+                renderer3D.setSize(container3D.clientWidth, container3D.clientHeight);
+            }
+        });
+    </script>
+</body>
+</html>
