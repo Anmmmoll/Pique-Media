@@ -21,8 +21,8 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; scroll-behavior: smooth; }
         body { background-color: var(--bg-base); color: var(--text-main); overflow-x: hidden; }
 
+        /* SAFE AMBIENT GLOW */
         .ambient-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: #000000; }
-        
         .orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.3; animation: float 15s infinite ease-in-out alternate; }
         .orb-1 { width: 600px; height: 600px; background: rgba(0, 102, 204, 0.15); top: -100px; left: -100px; animation-duration: 20s; }
         .orb-2 { width: 700px; height: 700px; background: rgba(175, 82, 222, 0.1); bottom: -200px; right: -100px; animation-duration: 25s; animation-direction: alternate-reverse; }
@@ -32,6 +32,7 @@
         .glass {
             background: var(--glass-bg);
             backdrop-filter: blur(40px) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) saturate(200%);
             border: 1px solid var(--glass-border);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
             border-radius: 30px;
@@ -45,97 +46,63 @@
         .nav-links a:hover { opacity: 1; }
 
         #home-container { padding: 150px 5% 50px 5%; display: flex; justify-content: center; }
-        #home { position: relative; text-align: center; width: 100%; max-width: 1200px; padding: 60px 20px; overflow: hidden; z-index: 1; }
+        
+        /* APPLE GLASS BOX HERO WITH WATER EFFECT */
+        #home { 
+            position: relative; 
+            text-align: center; 
+            width: 100%; 
+            max-width: 1200px; 
+            padding: 60px 20px; 
+            overflow: hidden; 
+            z-index: 1; 
+        }
 
-        /* WATER ANIMATION CSS */
-        .water-wave {
+        /* SAFE WATER ANIMATION */
+        .safe-water {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 120px;
-            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="rgba(0,102,204,0.15)" d="M0,160L48,176C96,192,192,224,288,213.3C384,203,480,149,576,144C672,139,768,181,864,197.3C960,213,1056,203,1152,186.7C1248,171,1344,149,1392,138.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') repeat-x;
-            background-size: 1440px 120px;
-            animation: waveFlow 6s linear infinite;
+            bottom: 0; left: 0; right: 0;
+            height: 30%;
+            background: linear-gradient(180deg, rgba(0,102,204,0) 0%, rgba(0,102,204,0.2) 100%);
+            border-radius: 0 0 30px 30px;
+            animation: breatheWater 4s infinite alternate;
             z-index: 0;
             pointer-events: none;
         }
-
-        .water-wave-2 {
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            width: 100%;
-            height: 120px;
-            background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg"><path fill="rgba(175,82,222,0.15)" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,250.7C960,235,1056,181,1152,165.3C1248,149,1344,171,1392,181.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>') repeat-x;
-            background-size: 1440px 120px;
-            animation: waveFlow 9s linear infinite reverse;
-            z-index: 0;
-            pointer-events: none;
+        @keyframes breatheWater {
+            0% { opacity: 0.5; transform: scaleY(1); }
+            100% { opacity: 1; transform: scaleY(1.1); }
         }
 
-        @keyframes waveFlow { 0% { background-position-x: 0; } 100% { background-position-x: 1440px; } }
-
-        /* ==================================================== */
-        /* INSTANT 2.5D CAR SHOWCASE (ZERO LOAD TIME)           */
-        /* ==================================================== */
+        /* 2.5D BMW M5 SHOWCASE */
         #fast-car-showcase {
-            width: 100%;
-            height: 350px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            perspective: 1000px;
-            margin-bottom: 30px;
-            z-index: 10;
-            position: relative;
+            width: 100%; height: 350px; display: flex; justify-content: center; align-items: center;
+            perspective: 1000px; margin-bottom: 30px; z-index: 10; position: relative;
         }
 
         .car-25d-wrapper {
-            position: relative;
-            width: 650px;
-            height: 300px;
-            transition: transform 0.1s ease-out; 
-            transform-style: preserve-3d;
+            position: relative; width: 650px; height: 300px;
+            transition: transform 0.1s ease-out; transform-style: preserve-3d;
             animation: hoverCar 4s ease-in-out infinite; 
         }
 
         .car-image {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 40px 20px rgba(0,0,0,0.9)); 
-            position: relative;
-            z-index: 5;
+            width: 100%; height: 100%; object-fit: contain;
+            filter: drop-shadow(0 40px 20px rgba(0,0,0,0.9)); position: relative; z-index: 5;
         }
 
-        /* GLOWING HEADLIGHTS (Perfectly Aligned) */
+        /* GLOWING HEADLIGHTS */
         .headlight {
-            position: absolute;
-            width: 120px;
-            height: 120px;
+            position: absolute; width: 120px; height: 120px;
             background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(130,200,255,0.7) 30%, rgba(0,102,204,0) 70%);
-            border-radius: 50%;
-            mix-blend-mode: screen;
-            animation: pulseLight 1.5s infinite alternate;
-            z-index: 10;
-            pointer-events: none;
+            border-radius: 50%; mix-blend-mode: screen;
+            animation: pulseLight 1.5s infinite alternate; z-index: 10; pointer-events: none;
         }
-
-        /* ALIGNED FOR THE BMW M5 PNG */
         .hl-left { top: 58%; left: 16%; }
         .hl-right { top: 58%; right: 16%; }
 
-        @keyframes hoverCar {
-            0%, 100% { top: 0px; }
-            50% { top: -15px; }
-        }
-
-        @keyframes pulseLight {
-            0% { opacity: 0.7; transform: scale(0.9); }
-            100% { opacity: 1; transform: scale(1.4); }
-        }
-        /* ==================================================== */
+        @keyframes hoverCar { 0%, 100% { top: 0px; } 50% { top: -15px; } }
+        @keyframes pulseLight { 0% { opacity: 0.7; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1.4); } }
 
         .hero-badge { background: rgba(255,255,255,0.08); padding: 10px 24px; border-radius: 30px; font-size: 0.9rem; font-weight: 700; color: var(--text-muted); margin-bottom: 30px; display: inline-block; position: relative; z-index: 2; }
         #home h1 { font-size: 6.5rem; font-weight: 800; line-height: 1.05; letter-spacing: -3.5px; margin-bottom: 30px; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; position: relative; z-index: 2; }
@@ -144,4 +111,412 @@
 
         section:not(#home) { padding: 100px 8% 100px 8%; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .section-title { font-size: 4rem; font-weight: 800; letter-spacing: -2px; text-align: center; margin-bottom: 15px; position: relative; z-index: 2; }
-        .section-subtitle { font-size: 1.3rem; color: var(--text-muted); text-align: center; max-width: 750px; margin: 0 auto 60px auto; font-weight: 500; line-height: 1
+        .section-subtitle { font-size: 1.3rem; color: var(--text-muted); text-align: center; max-width: 750px; margin: 0 auto 60px auto; font-weight: 500; line-height: 1.5; position: relative; z-index: 2; }
+
+        /* Bento Grid */
+        .bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; width: 100%; max-width: 1200px; }
+        .reels-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; width: 100%; max-width: 1200px; margin-top: 30px; }
+        .bento-card { padding: 35px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); transition: transform 0.4s ease, box-shadow 0.4s ease; border-radius: 30px; }
+        .bento-card:hover { transform: translateY(-8px); box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
+        .bento-icon { font-size: 2.5rem; margin-bottom: 20px; }
+        .bento-title { font-size: 1.8rem; font-weight: 700; margin-bottom: 15px; letter-spacing: -0.5px; }
+        .bento-desc { color: var(--text-muted); font-size: 1rem; line-height: 1.6; margin-bottom: 25px; }
+
+        .skill-cloud { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
+        .skill-tag { background: rgba(255,255,255,0.05); color: var(--text-main); padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; border: 1px solid rgba(255,255,255,0.03); transition: all 0.2s;}
+        .skill-tag:hover { background: #ffffff; color: #000000; }
+
+        .video-wrapper { position: relative; width: 100%; border-radius: 20px; overflow: hidden; background: #000; box-shadow: 0 12px 28px rgba(0,0,0,0.5); margin-bottom: 25px; aspect-ratio: 16/9; }
+        .video-wrapper.vertical { aspect-ratio: 9/16; max-width: 100%; margin: 0 auto 25px auto; }
+        .video-wrapper iframe { width: 100%; height: 100%; border: none; display: block; }
+
+        .thumb-wrapper { position: relative; width: 100%; border-radius: 16px; overflow: hidden; background: #1a1a1a; box-shadow: 0 8px 24px rgba(0,0,0,0.3); aspect-ratio: 16/9; cursor: pointer; }
+        .thumb-wrapper img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1); }
+        .thumb-wrapper:hover img { transform: scale(1.06); }
+        .thumb-grid-top { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; margin-bottom: 25px; }
+        .thumb-grid-bottom { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
+
+        .input-group { display: flex; flex-direction: column; gap: 8px; text-align: left; width: 100%; }
+        .input-group label { font-size: 0.9rem; font-weight: 600; color: var(--text-main); padding-left: 5px; }
+        .apple-input { width: 100%; padding: 16px 20px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.05); color: #fff; font-size: 1rem; outline: none; transition: all 0.3s ease; }
+        .apple-input:focus { border-color: var(--accent-blue); background: rgba(255, 255, 255, 0.1); box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.2); }
+
+        .social-grid { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
+        .social-btn { padding: 16px 35px; border-radius: 30px; background: rgba(255,255,255,0.05); color: var(--text-main); text-decoration: none; font-weight: 600; border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s; }
+        .social-btn:hover { background: #ffffff; color: #000000; transform: translateY(-3px); }
+
+        .match-container { max-width: 900px; width: 100%; text-align: center; padding: 60px 40px; margin: 0 auto; background: rgba(255,255,255,0.02); }
+        .editor-result-card { display: flex; flex-direction: column; align-items: center; padding: 30px; border-radius: 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); margin-top: 20px; width: 100%; max-width: 280px; }
+        .editor-avatar { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 15px; border: 3px solid var(--accent-blue); }
+        .tag-badge { background: var(--accent-blue); color: #fff; padding: 5px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 700; margin-bottom: 10px; }
+
+        #scroll-wrapper { transition: filter 0.3s ease-out; will-change: filter; }
+
+        @media (max-width: 768px) {
+            #home h1 { font-size: 3.5rem; letter-spacing: -1.5px; }
+            .section-title { font-size: 3rem; }
+            .nav-links { display: none; }
+            #home-container { padding: 120px 5% 50px 5%; }
+            .bento-card[style*="grid-column: span 100%"], .bento-card[style*="grid-column: span 2"] { grid-column: span 1 !important; }
+            .thumb-grid-top, .thumb-grid-bottom { grid-template-columns: 1fr; gap: 15px;}
+            .car-25d-wrapper { width: 100%; height: 200px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="ambient-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <nav class="glass" id="navbar">
+        <div class="logo">PIQUE<span>MEDIA</span></div>
+        <ul class="nav-links">
+            <li><a href="#services">Services</a></li>
+            <li><a href="#portfolio">Our Work</a></li>
+            <li><a href="#matchmaker">Find Editor</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <div id="scroll-wrapper">
+        
+        <div id="home-container">
+            <section id="home" class="glass">
+                
+                <div class="safe-water"></div>
+
+                <div class="hero-badge">Validation: First Revenue Generated</div>
+                
+                <div id="fast-car-showcase">
+                    <div class="car-25d-wrapper">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/BMW_M5_Competition_F90.png/800px-BMW_M5_Competition_F90.png" alt="BMW M5" class="car-image">
+                        
+                        <div class="headlight hl-left"></div>
+                        <div class="headlight hl-right"></div>
+                    </div>
+                </div>
+
+                <h1>The Future of <br>Engagement.</h1>
+                <p class="section-subtitle">We build bulletproof retention systems. Pique Media engineers elite motion graphics, advanced editing, and structural assets that scale organic reach natively.</p>
+                <a href="#portfolio" class="btn-primary">See The Proof</a>
+            </section>
+        </div>
+
+        <section id="services">
+            <h2 class="section-title">The Master Blueprint</h2>
+            <p class="section-subtitle">End-to-end digital dominance. From deep strategy to frame-by-frame visual engineering, here is our complete capability stack.</p>
+            
+            <div class="bento-grid">
+                <div class="glass bento-card">
+                    <div class="bento-icon">📊</div>
+                    <h3 class="bento-title">Growth & Management</h3>
+                    <p class="bento-desc">Complete takeover of your digital presence. We handle the algorithm so you can handle the business.</p>
+                    <div class="skill-cloud">
+                        <span class="skill-tag">Channel Management</span>
+                        <span class="skill-tag">Page Management</span>
+                        <span class="skill-tag">Advanced SEO</span>
+                        <span class="skill-tag">Viral Script Writing</span>
+                        <span class="skill-tag">Content Strategy</span>
+                        <span class="skill-tag">Analytics Auditing</span>
+                    </div>
+                </div>
+
+                <div class="glass bento-card" style="grid-column: span 2;">
+                    <div class="bento-icon">🎬</div>
+                    <h3 class="bento-title">Elite Post-Production</h3>
+                    <p class="bento-desc">Cinematic retention engineering. Whether it's a high-ticket SaaS breakdown or a massive gaming vlog, we make it impossible to click away.</p>
+                    <div class="skill-cloud">
+                        <span class="skill-tag">Motion Graphics</span>
+                        <span class="skill-tag">SaaS UI Animation</span>
+                        <span class="skill-tag">Color Grading</span>
+                        <span class="skill-tag">Rotoscoping & Masking</span>
+                        <span class="skill-tag">3D Camera Tracking</span>
+                        <span class="skill-tag">Speed Ramping</span>
+                        <span class="skill-tag">Keyframing</span>
+                        <span class="skill-tag">Green Screen/Chroma Key</span>
+                        <span class="skill-tag">Dynamic Subtitling</span>
+                        <span class="skill-tag">Multicam Sync</span>
+                        <span class="skill-tag">Vlog & Gaming Cuts</span>
+                        <span class="skill-tag">AI Generated Videos</span>
+                        <span class="skill-tag">Documentary Flow</span>
+                        <span class="skill-tag">High-Ticket VSLs</span>
+                        <span class="skill-tag">Short-form/Reels</span>
+                    </div>
+                </div>
+
+                <div class="glass bento-card">
+                    <div class="bento-icon">🎨</div>
+                    <h3 class="bento-title">Visual & Brand Identity</h3>
+                    <p class="bento-desc">Click-through rates that break dashboards. We design visual hooks that demand attention.</p>
+                    <div class="skill-cloud">
+                        <span class="skill-tag">High-CTR Thumbnails</span>
+                        <span class="skill-tag">Logo Design</span>
+                        <span class="skill-tag">Channel Banners</span>
+                        <span class="skill-tag">Social Media Kits</span>
+                        <span class="skill-tag">Vector Art</span>
+                        <span class="skill-tag">Typography Integration</span>
+                        <span class="skill-tag">UI/UX Mockups</span>
+                        <span class="skill-tag">Brand Collateral</span>
+                    </div>
+                </div>
+
+                <div class="glass bento-card">
+                    <div class="bento-icon">🎧</div>
+                    <h3 class="bento-title">Immersive Sound Design</h3>
+                    <p class="bento-desc">Audio is 50% of the experience. We build custom soundscapes that trigger psychological engagement.</p>
+                    <div class="skill-cloud">
+                        <span class="skill-tag">Foley Audio</span>
+                        <span class="skill-tag">Cinematic SFX Layering</span>
+                        <span class="skill-tag">Voiceover Mastering</span>
+                        <span class="skill-tag">Noise Reduction</span>
+                        <span class="skill-tag">EQ & Audio Mixing</span>
+                        <span class="skill-tag">Spatial Panning</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="portfolio">
+            <h2 class="section-title">Our Masterpieces</h2>
+            <p class="section-subtitle">Curated retention assets engineered by Pique Media. High-converting layouts, SaaS motion, and viral hooks.</p>
+            
+            <div class="bento-grid">
+                <div class="glass bento-card">
+                    <div class="video-wrapper">
+                        <iframe src="https://drive.google.com/file/d/17x3DeO9YCNBGEraetthNoURAsJcCjQkNtIskSzrRqmg/preview" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    </div>
+                    <h3 class="bento-title">SaaS Animation 1</h3>
+                    <span style="color: var(--accent-blue); font-weight: 700; font-size: 0.9rem;">B2B Conversion Focus</span>
+                </div>
+
+                <div class="glass bento-card">
+                    <div class="video-wrapper">
+                        <iframe src="https://drive.google.com/file/d/1ah9nA9Aa0WaTA7UTWC1yYI9hl6yWhIBj/preview" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    </div>
+                    <h3 class="bento-title">SaaS Animation 2</h3>
+                    <span style="color: var(--accent-blue); font-weight: 700; font-size: 0.9rem;">Dynamic UI Tracking</span>
+                </div>
+
+                <div class="glass bento-card">
+                    <div class="video-wrapper">
+                        <iframe src="https://drive.google.com/file/d/1jsBuSPSsiLPh0k81XyIzVNIkvkl6dnY-/preview" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    </div>
+                    <h3 class="bento-title">Cartoon & 2D Motion</h3>
+                    <span style="color: var(--accent-blue); font-weight: 700; font-size: 0.9rem;">Character Storytelling</span>
+                </div>
+            </div>
+
+            <div class="reels-grid">
+                <div class="glass bento-card">
+                    <div class="video-wrapper vertical">
+                        <iframe src="https://drive.google.com/file/d/1ly-94aKNYbCdTBxN30iq1fuMF4ypUe_X/preview" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    </div>
+                    <h3 class="bento-title">Viral Short 1</h3>
+                    <p class="bento-desc">High-retention mobile pacing.</p>
+                </div>
+
+                <div class="glass bento-card">
+                    <div class="video-wrapper vertical">
+                        <iframe src="https://drive.google.com/file/d/1x12hUtzKnbexOyOsWrnSfzwXX8fGDiXg/preview" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    </div>
+                    <h3 class="bento-title">Viral Short 2</h3>
+                    <p class="bento-desc">Multi-hook transitions.</p>
+                </div>
+
+                <div class="glass bento-card">
+                    <div class="video-wrapper vertical">
+                        <iframe src="https://drive.google.com/file/d/1UgUD2Bc4u0zii_qkLdxrrtw6PPEVliBS/preview" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                    </div>
+                    <h3 class="bento-title">Viral Short 3</h3>
+                    <p class="bento-desc">Dynamic subtitling.</p>
+                </div>
+            </div>
+
+            <div class="bento-grid" style="margin-top: 30px;">
+                <div class="glass bento-card" style="grid-column: span 100%; text-align: center;">
+                    <div class="video-wrapper" style="max-height: 700px;">
+                        <iframe src="https://www.youtube.com/embed/-oKvblo_YQw" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                    </div>
+                    <h3 class="bento-title" style="font-size: 2.5rem;">Cinematic Masterpiece</h3>
+                    <span style="color: var(--accent-red); font-weight: 700; font-size: 1.1rem; display: block; margin-bottom: 15px;">Long-Form / Documentary Cut</span>
+                    <p class="bento-desc" style="max-width: 800px; margin: 0 auto;">Our flagship long-form retention asset. Engineered with deep soundscapes, advanced color grading, and a narrative flow designed to convert cold traffic into high-ticket clients.</p>
+                </div>
+            </div>
+
+            <div class="bento-grid" style="margin-top: 30px;">
+                <div class="glass bento-card" style="grid-column: span 100%;">
+                    <h3 class="bento-title" style="font-size: 2.5rem; text-align: center;">High-CTR Thumbnails</h3>
+                    <p class="section-subtitle" style="margin-bottom: 30px;">Visual hooks designed to break the scroll and maximize click-through rates.</p>
+                    
+                    <div class="thumb-grid-top">
+                        <div class="thumb-wrapper"><img src="thumb1.jpg" alt="Thumbnail 1"></div>
+                        <div class="thumb-wrapper"><img src="thumb2.jpg" alt="Thumbnail 2"></div>
+                    </div>
+                    
+                    <div class="thumb-grid-bottom">
+                        <div class="thumb-wrapper"><img src="thumb3.jpg" alt="Thumbnail 3"></div>
+                        <div class="thumb-wrapper"><img src="thumb4.jpg" alt="Thumbnail 4"></div>
+                        <div class="thumb-wrapper"><img src="thumb5.jpg" alt="Thumbnail 5"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="matchmaker">
+            <div class="glass match-container">
+                <h2 class="section-title" style="font-size: 3rem;">AI Editor Routing</h2>
+                <p class="section-subtitle">Tell us what you need, and our system will match you with the perfect specialized operator from our team.</p>
+                
+                <select id="clientRequirement" class="apple-input" style="font-weight: 600; cursor: pointer; text-align: center; max-width: 500px; margin: 0 auto 20px auto;">
+                    <option value="none" selected disabled>Select your video requirement...</option>
+                    <option value="saas">SaaS & UI Product Walkthroughs</option>
+                    <option value="shorts">High-Retention Viral Shorts/Reels</option>
+                    <option value="vsl">Cinematic Documentary / VSLs</option>
+                    <option value="gaming">Vlog & Gaming Cuts</option>
+                </select>
+                <br>
+                <button onclick="findMatch()" class="btn-primary" style="padding: 15px 40px; margin-bottom: 40px;">Scan Database</button>
+
+                <div id="editorResults" style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;"></div>
+
+                <div id="emailCaptureBox" style="display: none; margin-top: 40px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.1);">
+                    <h3 style="margin-bottom: 20px; font-size: 1.8rem;">Confirm Allocation</h3>
+                    <form action="https://api.web3forms.com/submit" method="POST" style="display: flex; flex-direction: column; gap: 15px; align-items: center;">
+                        <input type="hidden" name="access_key" value="08b8a178-8bce-4a78-a3f3-4f248b5fec6d">
+                        <input type="hidden" name="subject" value="URGENT: New Client Selected an Editor!">
+                        <input type="hidden" name="Selected_Editor" id="formEditorName" value="">
+                        <input type="hidden" name="Client_Requirement" id="formClientReq" value="">
+                        
+                        <input type="email" name="Client_Email" placeholder="Enter your Email" class="apple-input" style="max-width: 400px;" required>
+                        <input type="text" name="Client_Company" placeholder="Your Name or Company" class="apple-input" style="max-width: 400px;" required>
+                        <button type="submit" class="btn-primary" style="width: 100%; max-width: 400px;">Dispatch to Agency HQ</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+        
+        <section id="contact">
+            <div class="glass bento-card" style="text-align: center; max-width: 800px; width: 100%; padding: 60px 40px;">
+                <h2 class="section-title" style="font-size: 3.5rem;">Initialize Protocol</h2>
+                <p class="section-subtitle" style="margin-bottom: 40px;">Drop your coordinates or connect across our channels to deploy your campaign immediately.</p>
+                
+                <form action="https://api.web3forms.com/submit" method="POST" style="display: flex; flex-direction: column; gap: 20px; max-width: 500px; margin: 0 auto 40px auto;">
+                    <input type="hidden" name="access_key" value="08b8a178-8bce-4a78-a3f3-4f248b5fec6d">
+                    <input type="hidden" name="subject" value="General Inquiry from Pique Media">
+                    
+                    <div class="input-group">
+                        <label>Email Address</label>
+                        <input type="email" name="Email" placeholder="name@company.com" required class="apple-input">
+                    </div>
+                    <div class="input-group">
+                        <label>Phone / WhatsApp Number</label>
+                        <input type="tel" name="Phone" placeholder="+91 XXXXX XXXXX" required class="apple-input">
+                    </div>
+                    <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;">Deploy Campaign</button>
+                </form>
+
+                <div style="font-weight: 700; color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 25px;">Or Instant Connect</div>
+
+                <div class="social-grid">
+                    <a href="https://www.linkedin.com/in/pique-media-622643409/" target="_blank" class="social-btn">LinkedIn Direct</a>
+                    <a href="https://discordapp.com/users/950408132201447496" target="_blank" class="social-btn">Discord Node</a>
+                </div>
+            </div>
+        </section>
+
+        <footer style="text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.95rem; font-weight: 500;">
+            &copy; 2026 Pique Media. Built on Apple-grade logic.
+        </footer>
+    </div>
+
+    <script>
+        // JS SAFETY CHECK (PREVENTS CRASHES)
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // INSTANT 2.5D MOUSE TILT EFFECT
+            const wrapper = document.querySelector('.car-25d-wrapper');
+            const container = document.getElementById('fast-car-showcase');
+
+            if(container && wrapper) {
+                container.addEventListener('mousemove', (e) => {
+                    const rect = container.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    const xAxis = -(y / 15);
+                    const yAxis = (x / 15);
+                    wrapper.style.transform = `rotateX(${xAxis}deg) rotateY(${yAxis}deg)`;
+                });
+
+                container.addEventListener('mouseleave', () => {
+                    wrapper.style.transform = `rotateX(0deg) rotateY(0deg)`;
+                });
+            }
+
+            // Scroll Logic
+            const scrollWrapper = document.getElementById('scroll-wrapper');
+            let scrollTimeout;
+            if(scrollWrapper) {
+                window.addEventListener('scroll', () => {
+                    scrollWrapper.style.transition = 'none';
+                    scrollWrapper.style.filter = 'blur(2px)';
+                    clearTimeout(scrollTimeout);
+                    scrollTimeout = setTimeout(() => {
+                        scrollWrapper.style.transition = 'filter 0.4s ease-out';
+                        scrollWrapper.style.filter = 'blur(0px)';
+                    }, 80);
+                });
+            }
+        });
+
+        // Matchmaker Logic
+        const editorDB = [
+            { id: 1, name: "Ritesh", tags: ["saas", "ui"], exp: "SaaS Motion Expert", img: "https://i.ibb.co/b3bZg4z/image-82b76a.jpg" },
+            { id: 2, name: "Parth", tags: ["shorts", "gaming"], exp: "High-Retention Master", img: "https://i.ibb.co/YyKmxGZ/image-82b44a.jpg" },
+            { id: 3, name: "Aamir", tags: ["vsl", "documentary"], exp: "Cinematic Color & VSL", img: "https://i.ibb.co/VvzK2B5/image-82b3b2.jpg" }
+        ];
+
+        function findMatch() {
+            const req = document.getElementById('clientRequirement');
+            const resultsBox = document.getElementById('editorResults');
+            const emailBox = document.getElementById('emailCaptureBox');
+            
+            if(!req || !resultsBox || !emailBox) return;
+
+            if(req.value === "none") { alert("Please select a video requirement first."); return; }
+            
+            resultsBox.innerHTML = "";
+            emailBox.style.display = "none";
+            
+            const matchedEditors = editorDB.filter(editor => editor.tags.includes(req.value));
+            
+            if(matchedEditors.length > 0) {
+                matchedEditors.forEach(ed => {
+                    resultsBox.innerHTML += `
+                        <div class="editor-result-card">
+                            <span class="tag-badge">98% Match</span>
+                            <img src="${ed.img}" class="editor-avatar" alt="editor">
+                            <h3 style="margin-bottom: 5px;">${ed.name}</h3>
+                            <p style="font-size: 0.9rem; color: #86868b; margin-bottom: 15px;">${ed.exp}</p>
+                            <button onclick="selectEditor('${ed.name}', '${req.value}')" class="btn-primary" style="padding: 10px 20px; font-size: 0.9rem;">Select Editor</button>
+                        </div>
+                    `;
+                });
+            } else {
+                resultsBox.innerHTML = "<p style='font-weight:600; color:var(--text-muted);'>Scanning... No exact match found right now, but our Lead Director will handle this.</p>";
+            }
+        }
+
+        function selectEditor(name, requirement) {
+            document.getElementById('formEditorName').value = name;
+            document.getElementById('formClientReq').value = requirement;
+            const emailBox = document.getElementById('emailCaptureBox');
+            if(emailBox) {
+                emailBox.style.display = "block";
+                emailBox.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+    </script>
+</body>
+</html>
