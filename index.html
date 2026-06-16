@@ -53,7 +53,7 @@
             text-align: center; 
             width: 100%; 
             max-width: 1200px; 
-            padding: 60px 20px; 
+            padding: 100px 20px; 
             overflow: hidden; 
             z-index: 1; 
         }
@@ -62,7 +62,7 @@
         .safe-water {
             position: absolute;
             bottom: 0; left: 0; right: 0;
-            height: 30%;
+            height: 40%;
             background: linear-gradient(180deg, rgba(0,102,204,0) 0%, rgba(0,102,204,0.2) 100%);
             border-radius: 0 0 30px 30px;
             animation: breatheWater 4s infinite alternate;
@@ -74,37 +74,7 @@
             100% { opacity: 1; transform: scaleY(1.1); }
         }
 
-        /* 2.5D BMW M5 SHOWCASE */
-        #fast-car-showcase {
-            width: 100%; height: 350px; display: flex; justify-content: center; align-items: center;
-            perspective: 1000px; margin-bottom: 30px; z-index: 10; position: relative;
-        }
-
-        .car-25d-wrapper {
-            position: relative; width: 650px; height: 300px;
-            transition: transform 0.1s ease-out; transform-style: preserve-3d;
-            animation: hoverCar 4s ease-in-out infinite; 
-        }
-
-        .car-image {
-            width: 100%; height: 100%; object-fit: contain;
-            filter: drop-shadow(0 40px 20px rgba(0,0,0,0.9)); position: relative; z-index: 5;
-        }
-
-        /* GLOWING HEADLIGHTS */
-        .headlight {
-            position: absolute; width: 120px; height: 120px;
-            background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(130,200,255,0.7) 30%, rgba(0,102,204,0) 70%);
-            border-radius: 50%; mix-blend-mode: screen;
-            animation: pulseLight 1.5s infinite alternate; z-index: 10; pointer-events: none;
-        }
-        .hl-left { top: 58%; left: 16%; }
-        .hl-right { top: 58%; right: 16%; }
-
-        @keyframes hoverCar { 0%, 100% { top: 0px; } 50% { top: -15px; } }
-        @keyframes pulseLight { 0% { opacity: 0.7; transform: scale(0.9); } 100% { opacity: 1; transform: scale(1.4); } }
-
-        .hero-badge { background: rgba(255,255,255,0.08); padding: 10px 24px; border-radius: 30px; font-size: 0.9rem; font-weight: 700; color: var(--text-muted); margin-bottom: 30px; display: inline-block; position: relative; z-index: 2; }
+        .hero-badge { background: rgba(255,255,255,0.08); padding: 10px 24px; border-radius: 30px; font-size: 0.9rem; font-weight: 700; color: var(--text-muted); margin-bottom: 40px; display: inline-block; position: relative; z-index: 2; }
         #home h1 { font-size: 6.5rem; font-weight: 800; line-height: 1.05; letter-spacing: -3.5px; margin-bottom: 30px; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; position: relative; z-index: 2; }
         .btn-primary { background: #ffffff; color: #000000; padding: 20px 45px; font-size: 1.15rem; font-weight: 600; border-radius: 40px; text-decoration: none; display: inline-block; transition: all 0.3s; position: relative; z-index: 2; border: none; cursor: pointer; }
         .btn-primary:hover { transform: scale(1.04); box-shadow: 0 15px 30px rgba(255,255,255,0.15); background: #f0f0f0; }
@@ -159,7 +129,6 @@
             #home-container { padding: 120px 5% 50px 5%; }
             .bento-card[style*="grid-column: span 100%"], .bento-card[style*="grid-column: span 2"] { grid-column: span 1 !important; }
             .thumb-grid-top, .thumb-grid-bottom { grid-template-columns: 1fr; gap: 15px;}
-            .car-25d-wrapper { width: 100%; height: 200px; }
         }
     </style>
 </head>
@@ -185,19 +154,11 @@
         <div id="home-container">
             <section id="home" class="glass">
                 
+                <!-- SAFE WATER EFFECT (WON'T CRASH) -->
                 <div class="safe-water"></div>
 
                 <div class="hero-badge">Validation: First Revenue Generated</div>
                 
-                <div id="fast-car-showcase">
-                    <div class="car-25d-wrapper">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f0/BMW_M5_Competition_F90.png/800px-BMW_M5_Competition_F90.png" alt="BMW M5" class="car-image">
-                        
-                        <div class="headlight hl-left"></div>
-                        <div class="headlight hl-right"></div>
-                    </div>
-                </div>
-
                 <h1>The Future of <br>Engagement.</h1>
                 <p class="section-subtitle">We build bulletproof retention systems. Pique Media engineers elite motion graphics, advanced editing, and structural assets that scale organic reach natively.</p>
                 <a href="#portfolio" class="btn-primary">See The Proof</a>
@@ -432,29 +393,8 @@
     </div>
 
     <script>
-        // JS SAFETY CHECK (PREVENTS CRASHES)
         document.addEventListener('DOMContentLoaded', () => {
-            
-            // INSTANT 2.5D MOUSE TILT EFFECT
-            const wrapper = document.querySelector('.car-25d-wrapper');
-            const container = document.getElementById('fast-car-showcase');
-
-            if(container && wrapper) {
-                container.addEventListener('mousemove', (e) => {
-                    const rect = container.getBoundingClientRect();
-                    const x = e.clientX - rect.left - rect.width / 2;
-                    const y = e.clientY - rect.top - rect.height / 2;
-                    const xAxis = -(y / 15);
-                    const yAxis = (x / 15);
-                    wrapper.style.transform = `rotateX(${xAxis}deg) rotateY(${yAxis}deg)`;
-                });
-
-                container.addEventListener('mouseleave', () => {
-                    wrapper.style.transform = `rotateX(0deg) rotateY(0deg)`;
-                });
-            }
-
-            // Scroll Logic
+            // Scroll Blur Logic
             const scrollWrapper = document.getElementById('scroll-wrapper');
             let scrollTimeout;
             if(scrollWrapper) {
