@@ -1,462 +1,513 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pique Media | The Future of Retention</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <title>Pique Media — Premium Video Editing</title>
+  
+  <!-- Premium Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #F9F9F9;
+      color: #111111;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
     
-    <style>
-        :root {
-            /* DARK PREMIUM THEME */
-            --bg-base: #050505;
-            --text-main: #ffffff;
-            --text-muted: #86868b;
-            --glass-bg: rgba(20, 20, 20, 0.6);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --accent-red: #ff3b30;
-            --accent-blue: #0066cc;
-            --accent-gradient: linear-gradient(135deg, #ff3b30, #af52de, #0066cc);
-        }
+    .font-cinematic {
+      font-family: 'Playfair Display', serif;
+    }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif; scroll-behavior: smooth; }
-        body { background-color: var(--bg-base); color: var(--text-main); overflow-x: hidden; }
+    /* Clean Welcome Intro */
+    #intro-screen {
+      position: fixed;
+      inset: 0;
+      background: #F9F9F9;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 1s ease-in-out, visibility 1s;
+    }
 
-        /* SAFE AMBIENT GLOW */
-        .ambient-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: #000000; }
-        .orb { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.3; animation: float 15s infinite ease-in-out alternate; }
-        .orb-1 { width: 600px; height: 600px; background: rgba(0, 102, 204, 0.15); top: -100px; left: -100px; animation-duration: 20s; }
-        .orb-2 { width: 700px; height: 700px; background: rgba(175, 82, 222, 0.1); bottom: -200px; right: -100px; animation-duration: 25s; animation-direction: alternate-reverse; }
+    .welcome-text {
+      font-size: 1.5rem;
+      letter-spacing: 0.5em;
+      text-transform: uppercase;
+      color: #111111;
+      opacity: 0;
+      clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
+      animation: revealText 2.5s cubic-bezier(0.77, 0, 0.175, 1) forwards;
+    }
 
-        @keyframes float { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-50px, 100px) scale(1.1); } }
+    @media (min-width: 768px) {
+      .welcome-text {
+        font-size: 2.5rem;
+        letter-spacing: 0.8em;
+      }
+    }
 
-        .glass {
-            background: var(--glass-bg);
-            backdrop-filter: blur(40px) saturate(200%);
-            -webkit-backdrop-filter: blur(40px) saturate(200%);
-            border: 1px solid var(--glass-border);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-            border-radius: 30px;
-        }
+    @keyframes revealText {
+      0% { opacity: 0; clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%); transform: translateY(20px); }
+      30% { opacity: 1; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); transform: translateY(0); }
+      80% { opacity: 1; clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); transform: translateY(0); }
+      100% { opacity: 0; filter: blur(5px); transform: translateY(-20px); }
+    }
 
-        nav { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); width: 90%; max-width: 1000px; display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; z-index: 1000; border-radius: 50px; }
-        .logo { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; }
-        .logo span { background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .nav-links { display: flex; gap: 30px; list-style: none; }
-        .nav-links a { color: var(--text-main); text-decoration: none; font-size: 0.95rem; font-weight: 600; opacity: 0.7; transition: opacity 0.3s; }
-        .nav-links a:hover { opacity: 1; }
+    /* Page Reveal */
+    #main-content {
+      opacity: 0;
+      transition: opacity 1.5s ease-out;
+    }
+    #main-content.visible {
+      opacity: 1;
+    }
 
-        #home-container { padding: 150px 5% 50px 5%; display: flex; justify-content: center; }
-        
-        /* APPLE GLASS BOX HERO WITH WATER EFFECT */
-        #home { 
-            position: relative; 
-            text-align: center; 
-            width: 100%; 
-            max-width: 1200px; 
-            padding: 100px 20px; 
-            overflow: hidden; 
-            z-index: 1; 
-        }
+    /* Scroll Reveal Animation */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: all 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-        /* SAFE WATER ANIMATION */
-        .safe-water {
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            height: 40%;
-            background: linear-gradient(180deg, rgba(0,102,204,0) 0%, rgba(0,102,204,0.2) 100%);
-            border-radius: 0 0 30px 30px;
-            animation: breatheWater 4s infinite alternate;
-            z-index: 0;
-            pointer-events: none;
-        }
-        @keyframes breatheWater {
-            0% { opacity: 0.5; transform: scaleY(1); }
-            100% { opacity: 1; transform: scaleY(1.1); }
-        }
+    /* Premium Glassmorphism Cards */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.55);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.8);
+      box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
+      transition: all 0.4s ease;
+    }
+    .glass-card:hover {
+      border-color: rgba(0, 0, 0, 0.15);
+      box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.1);
+      transform: translateY(-5px) scale(1.02);
+    }
 
-        .hero-badge { background: rgba(255,255,255,0.08); padding: 10px 24px; border-radius: 30px; font-size: 0.9rem; font-weight: 700; color: var(--text-muted); margin-bottom: 40px; display: inline-block; position: relative; z-index: 2; }
-        #home h1 { font-size: 6.5rem; font-weight: 800; line-height: 1.05; letter-spacing: -3.5px; margin-bottom: 30px; background: var(--accent-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; position: relative; z-index: 2; }
-        .btn-primary { background: #ffffff; color: #000000; padding: 20px 45px; font-size: 1.15rem; font-weight: 600; border-radius: 40px; text-decoration: none; display: inline-block; transition: all 0.3s; position: relative; z-index: 2; border: none; cursor: pointer; }
-        .btn-primary:hover { transform: scale(1.04); box-shadow: 0 15px 30px rgba(255,255,255,0.15); background: #f0f0f0; }
+    .glass-bg-wrapper {
+      position: relative;
+      overflow: hidden;
+    }
+    .glass-bg-wrapper::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(230,230,230,1) 0%, rgba(249,249,249,0) 70%);
+      transform: translate(-50%, -50%);
+      z-index: -1;
+      filter: blur(60px);
+    }
 
-        section:not(#home) { padding: 100px 8% 100px 8%; min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-        .section-title { font-size: 4rem; font-weight: 800; letter-spacing: -2px; text-align: center; margin-bottom: 15px; position: relative; z-index: 2; }
-        .section-subtitle { font-size: 1.3rem; color: var(--text-muted); text-align: center; max-width: 750px; margin: 0 auto 60px auto; font-weight: 500; line-height: 1.5; position: relative; z-index: 2; }
-
-        /* Bento Grid */
-        .bento-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; width: 100%; max-width: 1200px; }
-        .reels-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; width: 100%; max-width: 1200px; margin-top: 30px; }
-        .bento-card { padding: 35px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); transition: transform 0.4s ease, box-shadow 0.4s ease; border-radius: 30px; }
-        .bento-card:hover { transform: translateY(-8px); box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
-        .bento-icon { font-size: 2.5rem; margin-bottom: 20px; }
-        .bento-title { font-size: 1.8rem; font-weight: 700; margin-bottom: 15px; letter-spacing: -0.5px; }
-        .bento-desc { color: var(--text-muted); font-size: 1rem; line-height: 1.6; margin-bottom: 25px; }
-
-        .skill-cloud { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
-        .skill-tag { background: rgba(255,255,255,0.05); color: var(--text-main); padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; border: 1px solid rgba(255,255,255,0.03); transition: all 0.2s;}
-        .skill-tag:hover { background: #ffffff; color: #000000; }
-
-        .video-wrapper { position: relative; width: 100%; border-radius: 20px; overflow: hidden; background: #000; box-shadow: 0 12px 28px rgba(0,0,0,0.5); margin-bottom: 25px; aspect-ratio: 16/9; }
-        .video-wrapper.vertical { aspect-ratio: 9/16; max-width: 100%; margin: 0 auto 25px auto; }
-        .video-wrapper iframe { width: 100%; height: 100%; border: none; display: block; }
-
-        .thumb-wrapper { position: relative; width: 100%; border-radius: 16px; overflow: hidden; background: #1a1a1a; box-shadow: 0 8px 24px rgba(0,0,0,0.3); aspect-ratio: 16/9; cursor: pointer; }
-        .thumb-wrapper img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1); }
-        .thumb-wrapper:hover img { transform: scale(1.06); }
-        .thumb-grid-top { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; margin-bottom: 25px; }
-        .thumb-grid-bottom { display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; }
-
-        .input-group { display: flex; flex-direction: column; gap: 8px; text-align: left; width: 100%; }
-        .input-group label { font-size: 0.9rem; font-weight: 600; color: var(--text-main); padding-left: 5px; }
-        .apple-input { width: 100%; padding: 16px 20px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.05); color: #fff; font-size: 1rem; outline: none; transition: all 0.3s ease; }
-        .apple-input:focus { border-color: var(--accent-blue); background: rgba(255, 255, 255, 0.1); box-shadow: 0 0 0 4px rgba(0, 102, 204, 0.2); }
-
-        .social-grid { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
-        .social-btn { padding: 16px 35px; border-radius: 30px; background: rgba(255,255,255,0.05); color: var(--text-main); text-decoration: none; font-weight: 600; border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s; }
-        .social-btn:hover { background: #ffffff; color: #000000; transform: translateY(-3px); }
-
-        .match-container { max-width: 900px; width: 100%; text-align: center; padding: 60px 40px; margin: 0 auto; background: rgba(255,255,255,0.02); }
-        .editor-result-card { display: flex; flex-direction: column; align-items: center; padding: 30px; border-radius: 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); margin-top: 20px; width: 100%; max-width: 280px; }
-        .editor-avatar { width: 100px; height: 100px; border-radius: 50%; object-fit: cover; margin-bottom: 15px; border: 3px solid var(--accent-blue); }
-        .tag-badge { background: var(--accent-blue); color: #fff; padding: 5px 12px; border-radius: 15px; font-size: 0.8rem; font-weight: 700; margin-bottom: 10px; }
-
-        #scroll-wrapper { transition: filter 0.3s ease-out; will-change: filter; }
-
-        @media (max-width: 768px) {
-            #home h1 { font-size: 3.5rem; letter-spacing: -1.5px; }
-            .section-title { font-size: 3rem; }
-            .nav-links { display: none; }
-            #home-container { padding: 120px 5% 50px 5%; }
-            .bento-card[style*="grid-column: span 100%"], .bento-card[style*="grid-column: span 2"] { grid-column: span 1 !important; }
-            .thumb-grid-top, .thumb-grid-bottom { grid-template-columns: 1fr; gap: 15px;}
-        }
-    </style>
+    /* Modal Transitions */
+    #portfolio-modal {
+      transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .modal-active {
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      transform: translateY(0) !important;
+    }
+    
+    #portfolio-modal::-webkit-scrollbar {
+      width: 8px;
+    }
+    #portfolio-modal::-webkit-scrollbar-track {
+      background: #F9F9F9;
+    }
+    #portfolio-modal::-webkit-scrollbar-thumb {
+      background: #ddd;
+      border-radius: 4px;
+    }
+  </style>
 </head>
 <body>
 
-    <div class="ambient-bg">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-    </div>
+  <!-- 1. INTRO SCREEN -->
+  <div id="intro-screen">
+    <h1 class="welcome-text font-cinematic">Welcome</h1>
+  </div>
 
-    <nav class="glass" id="navbar">
-        <div class="logo">PIQUE<span>MEDIA</span></div>
-        <ul class="nav-links">
-            <li><a href="#services">Services</a></li>
-            <li><a href="#portfolio">Our Work</a></li>
-            <li><a href="#matchmaker">Find Editor</a></li>
-            <li><a href="#contact">Contact</a></li>
-        </ul>
-    </nav>
+  <!-- 2. MAIN SITE -->
+  <div id="main-content">
+    
+    <header class="w-full border-b border-gray-200 sticky top-0 bg-[#F9F9F9]/80 backdrop-blur-md z-40">
+      <div class="max-w-6xl mx-auto px-6 h-20 flex items-center justify-between">
+        <span class="font-cinematic text-2xl font-bold tracking-widest uppercase text-black">
+          Pique Media<span class="text-neutral-400">.</span>
+        </span>
+        <a href="#contact" class="text-xs uppercase tracking-widest font-semibold px-6 py-2.5 rounded border border-gray-300 hover:bg-black hover:text-white transition-all duration-300">
+          Work With Us
+        </a>
+      </div>
+    </header>
 
-    <div id="scroll-wrapper">
-        
-        <div id="home-container">
-            <section id="home" class="glass">
-                
-                <!-- SAFE WATER EFFECT (WON'T CRASH) -->
-                <div class="safe-water"></div>
+    <section class="max-w-6xl mx-auto px-6 pt-32 pb-24 text-center flex flex-col items-center reveal">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-gray-200 bg-white text-xs text-gray-600 mb-10 shadow-sm">
+        <span class="w-1.5 h-1.5 rounded-full bg-black animate-pulse"></span>
+        Currently accepting new clients
+      </div>
 
-                <div class="hero-badge">Validation: First Revenue Generated</div>
-                
-                <h1>The Future of <br>Engagement.</h1>
-                <p class="section-subtitle">We build bulletproof retention systems. Pique Media engineers elite motion graphics, advanced editing, and structural assets that scale organic reach natively.</p>
-                <a href="#portfolio" class="btn-primary">See The Proof</a>
-            </section>
+      <h1 class="font-cinematic text-5xl sm:text-6xl md:text-7xl font-bold tracking-tight leading-[1.1] max-w-4xl mb-8 text-[#111]">
+        Crafting stories that <br class="hidden md:block" />
+        <span class="italic text-gray-500">demand attention.</span>
+      </h1>
+
+      <p class="text-gray-600 text-base sm:text-lg max-w-2xl font-light leading-relaxed mb-12">
+        We are Pique Media — a premium post-production house specializing in retention-driven editing, immersive sound design, and striking graphics for elite creators and modern brands.
+      </p>
+
+      <div class="flex flex-col sm:flex-row gap-5 items-center">
+        <a href="#team" class="px-10 py-4 bg-black text-white font-medium rounded text-sm hover:bg-gray-800 hover:shadow-lg transition-all duration-300 uppercase tracking-wide">
+          Meet Our Roster
+        </a>
+      </div>
+    </section>
+
+    <!-- ROSTER SECTION (GLASS EFFECT) -->
+    <section id="team" class="glass-bg-wrapper py-24 border-t border-gray-200">
+      <div class="max-w-6xl mx-auto px-6">
+        <div class="mb-16 reveal text-center">
+          <h2 class="font-cinematic text-3xl sm:text-4xl font-bold text-[#111] tracking-wide uppercase">Our Elite Roster</h2>
+          <p class="text-gray-500 text-sm mt-2 font-light">Select a talent to view their portfolio and reviews.</p>
         </div>
 
-        <section id="services">
-            <h2 class="section-title">The Master Blueprint</h2>
-            <p class="section-subtitle">End-to-end digital dominance. From deep strategy to frame-by-frame visual engineering, here is our complete capability stack.</p>
-            
-            <div class="bento-grid">
-                <div class="glass bento-card">
-                    <div class="bento-icon">📊</div>
-                    <h3 class="bento-title">Growth & Management</h3>
-                    <p class="bento-desc">Complete takeover of your digital presence. We handle the algorithm so you can handle the business.</p>
-                    <div class="skill-cloud">
-                        <span class="skill-tag">Channel Management</span>
-                        <span class="skill-tag">Page Management</span>
-                        <span class="skill-tag">Advanced SEO</span>
-                        <span class="skill-tag">Viral Script Writing</span>
-                        <span class="skill-tag">Content Strategy</span>
-                        <span class="skill-tag">Analytics Auditing</span>
-                    </div>
-                </div>
-
-                <div class="glass bento-card" style="grid-column: span 2;">
-                    <div class="bento-icon">🎬</div>
-                    <h3 class="bento-title">Elite Post-Production</h3>
-                    <p class="bento-desc">Cinematic retention engineering. Whether it's a high-ticket SaaS breakdown or a massive gaming vlog, we make it impossible to click away.</p>
-                    <div class="skill-cloud">
-                        <span class="skill-tag">Motion Graphics</span>
-                        <span class="skill-tag">SaaS UI Animation</span>
-                        <span class="skill-tag">Color Grading</span>
-                        <span class="skill-tag">Rotoscoping & Masking</span>
-                        <span class="skill-tag">3D Camera Tracking</span>
-                        <span class="skill-tag">Speed Ramping</span>
-                        <span class="skill-tag">Keyframing</span>
-                        <span class="skill-tag">Green Screen/Chroma Key</span>
-                        <span class="skill-tag">Dynamic Subtitling</span>
-                        <span class="skill-tag">Multicam Sync</span>
-                        <span class="skill-tag">Vlog & Gaming Cuts</span>
-                        <span class="skill-tag">AI Generated Videos</span>
-                        <span class="skill-tag">Documentary Flow</span>
-                        <span class="skill-tag">High-Ticket VSLs</span>
-                        <span class="skill-tag">Short-form/Reels</span>
-                    </div>
-                </div>
-
-                <div class="glass bento-card">
-                    <div class="bento-icon">🎨</div>
-                    <h3 class="bento-title">Visual & Brand Identity</h3>
-                    <p class="bento-desc">Click-through rates that break dashboards. We design visual hooks that demand attention.</p>
-                    <div class="skill-cloud">
-                        <span class="skill-tag">High-CTR Thumbnails</span>
-                        <span class="skill-tag">Logo Design</span>
-                        <span class="skill-tag">Channel Banners</span>
-                        <span class="skill-tag">Social Media Kits</span>
-                        <span class="skill-tag">Vector Art</span>
-                        <span class="skill-tag">Typography Integration</span>
-                        <span class="skill-tag">UI/UX Mockups</span>
-                        <span class="skill-tag">Brand Collateral</span>
-                    </div>
-                </div>
-
-                <div class="glass bento-card">
-                    <div class="bento-icon">🎧</div>
-                    <h3 class="bento-title">Immersive Sound Design</h3>
-                    <p class="bento-desc">Audio is 50% of the experience. We build custom soundscapes that trigger psychological engagement.</p>
-                    <div class="skill-cloud">
-                        <span class="skill-tag">Foley Audio</span>
-                        <span class="skill-tag">Cinematic SFX Layering</span>
-                        <span class="skill-tag">Voiceover Mastering</span>
-                        <span class="skill-tag">Noise Reduction</span>
-                        <span class="skill-tag">EQ & Audio Mixing</span>
-                        <span class="skill-tag">Spatial Panning</span>
-                    </div>
-                </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          
+          <div class="glass-card p-10 rounded-3xl flex flex-col items-center text-center reveal cursor-pointer group" onclick="openPortfolio('hemant')">
+            <h3 class="font-cinematic text-3xl font-bold text-[#111]">Hemant</h3>
+            <p class="text-xs text-gray-500 mt-2 font-bold uppercase tracking-widest mb-4">Video Editor</p>
+            <div class="flex items-center gap-1 text-yellow-500 mb-8">
+              <span class="text-xs font-bold text-gray-700 mr-1">4.9</span>
+              ★★★★★
             </div>
-        </section>
+            <button class="px-8 py-3 text-xs uppercase tracking-widest font-semibold border border-black rounded hover:bg-black hover:text-white transition-all w-full">See Work</button>
+          </div>
 
-        <section id="portfolio">
-            <h2 class="section-title">Our Masterpieces</h2>
-            <p class="section-subtitle">Curated retention assets engineered by Pique Media. High-converting layouts, SaaS motion, and viral hooks.</p>
-            
-            <div class="bento-grid">
-                <div class="glass bento-card">
-                    <div class="video-wrapper">
-                        <iframe src="https://drive.google.com/file/d/17x3DeO9YCNBGEraetthNoURAsJcCjQkNtIskSzrRqmg/preview" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                    </div>
-                    <h3 class="bento-title">SaaS Animation 1</h3>
-                    <span style="color: var(--accent-blue); font-weight: 700; font-size: 0.9rem;">B2B Conversion Focus</span>
-                </div>
-
-                <div class="glass bento-card">
-                    <div class="video-wrapper">
-                        <iframe src="https://drive.google.com/file/d/1ah9nA9Aa0WaTA7UTWC1yYI9hl6yWhIBj/preview" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                    </div>
-                    <h3 class="bento-title">SaaS Animation 2</h3>
-                    <span style="color: var(--accent-blue); font-weight: 700; font-size: 0.9rem;">Dynamic UI Tracking</span>
-                </div>
-
-                <div class="glass bento-card">
-                    <div class="video-wrapper">
-                        <iframe src="https://drive.google.com/file/d/1jsBuSPSsiLPh0k81XyIzVNIkvkl6dnY-/preview" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                    </div>
-                    <h3 class="bento-title">Cartoon & 2D Motion</h3>
-                    <span style="color: var(--accent-blue); font-weight: 700; font-size: 0.9rem;">Character Storytelling</span>
-                </div>
+          <div class="glass-card p-10 rounded-3xl flex flex-col items-center text-center reveal delay-100 cursor-pointer group" onclick="openPortfolio('sanjay')">
+            <h3 class="font-cinematic text-3xl font-bold text-[#111]">Sanjay</h3>
+            <p class="text-xs text-gray-500 mt-2 font-bold uppercase tracking-widest mb-4">Video Editor</p>
+            <div class="flex items-center gap-1 text-yellow-500 mb-8">
+              <span class="text-xs font-bold text-gray-700 mr-1">4.8</span>
+              ★★★★★
             </div>
+            <button class="px-8 py-3 text-xs uppercase tracking-widest font-semibold border border-black rounded hover:bg-black hover:text-white transition-all w-full">See Work</button>
+          </div>
 
-            <div class="reels-grid">
-                <div class="glass bento-card">
-                    <div class="video-wrapper vertical">
-                        <iframe src="https://drive.google.com/file/d/1ly-94aKNYbCdTBxN30iq1fuMF4ypUe_X/preview" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                    </div>
-                    <h3 class="bento-title">Viral Short 1</h3>
-                    <p class="bento-desc">High-retention mobile pacing.</p>
-                </div>
-
-                <div class="glass bento-card">
-                    <div class="video-wrapper vertical">
-                        <iframe src="https://drive.google.com/file/d/1x12hUtzKnbexOyOsWrnSfzwXX8fGDiXg/preview" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                    </div>
-                    <h3 class="bento-title">Viral Short 2</h3>
-                    <p class="bento-desc">Multi-hook transitions.</p>
-                </div>
-
-                <div class="glass bento-card">
-                    <div class="video-wrapper vertical">
-                        <iframe src="https://drive.google.com/file/d/1UgUD2Bc4u0zii_qkLdxrrtw6PPEVliBS/preview" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-                    </div>
-                    <h3 class="bento-title">Viral Short 3</h3>
-                    <p class="bento-desc">Dynamic subtitling.</p>
-                </div>
+          <div class="glass-card p-10 rounded-3xl flex flex-col items-center text-center reveal delay-200 cursor-pointer group" onclick="openPortfolio('kush')">
+            <h3 class="font-cinematic text-3xl font-bold text-[#111]">Kush</h3>
+            <p class="text-xs text-gray-500 mt-2 font-bold uppercase tracking-widest mb-4">Video Editor</p>
+            <div class="flex items-center gap-1 text-yellow-500 mb-8">
+              <span class="text-xs font-bold text-gray-700 mr-1">5.0</span>
+              ★★★★★
             </div>
+            <button class="px-8 py-3 text-xs uppercase tracking-widest font-semibold border border-black rounded hover:bg-black hover:text-white transition-all w-full">See Work</button>
+          </div>
 
-            <div class="bento-grid" style="margin-top: 30px;">
-                <div class="glass bento-card" style="grid-column: span 100%; text-align: center;">
-                    <div class="video-wrapper" style="max-height: 700px;">
-                        <iframe src="https://www.youtube.com/embed/-oKvblo_YQw" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                    </div>
-                    <h3 class="bento-title" style="font-size: 2.5rem;">Cinematic Masterpiece</h3>
-                    <span style="color: var(--accent-red); font-weight: 700; font-size: 1.1rem; display: block; margin-bottom: 15px;">Long-Form / Documentary Cut</span>
-                    <p class="bento-desc" style="max-width: 800px; margin: 0 auto;">Our flagship long-form retention asset. Engineered with deep soundscapes, advanced color grading, and a narrative flow designed to convert cold traffic into high-ticket clients.</p>
-                </div>
+          <div class="glass-card p-10 rounded-3xl flex flex-col items-center text-center reveal cursor-pointer group" onclick="openPortfolio('ayush')">
+            <h3 class="font-cinematic text-3xl font-bold text-[#111]">Ayush</h3>
+            <p class="text-xs text-gray-500 mt-2 font-bold uppercase tracking-widest mb-4">2D Animator</p>
+            <div class="flex items-center gap-1 text-yellow-500 mb-8">
+              <span class="text-xs font-bold text-gray-700 mr-1">4.9</span>
+              ★★★★★
             </div>
+            <button class="px-8 py-3 text-xs uppercase tracking-widest font-semibold border border-black rounded hover:bg-black hover:text-white transition-all w-full">See Work</button>
+          </div>
 
-            <div class="bento-grid" style="margin-top: 30px;">
-                <div class="glass bento-card" style="grid-column: span 100%;">
-                    <h3 class="bento-title" style="font-size: 2.5rem; text-align: center;">High-CTR Thumbnails</h3>
-                    <p class="section-subtitle" style="margin-bottom: 30px;">Visual hooks designed to break the scroll and maximize click-through rates.</p>
-                    
-                    <div class="thumb-grid-top">
-                        <div class="thumb-wrapper"><img src="thumb1.jpg" alt="Thumbnail 1"></div>
-                        <div class="thumb-wrapper"><img src="thumb2.jpg" alt="Thumbnail 2"></div>
-                    </div>
-                    
-                    <div class="thumb-grid-bottom">
-                        <div class="thumb-wrapper"><img src="thumb3.jpg" alt="Thumbnail 3"></div>
-                        <div class="thumb-wrapper"><img src="thumb4.jpg" alt="Thumbnail 4"></div>
-                        <div class="thumb-wrapper"><img src="thumb5.jpg" alt="Thumbnail 5"></div>
-                    </div>
-                </div>
+          <div class="glass-card p-10 rounded-3xl flex flex-col items-center text-center reveal delay-100 cursor-pointer group" onclick="openPortfolio('satyam')">
+            <h3 class="font-cinematic text-3xl font-bold text-[#111]">Satyam</h3>
+            <p class="text-xs text-gray-500 mt-2 font-bold uppercase tracking-widest mb-4">Video Editor</p>
+            <div class="flex items-center gap-1 text-yellow-500 mb-8">
+              <span class="text-xs font-bold text-gray-700 mr-1">4.7</span>
+              ★★★★★
             </div>
-        </section>
+            <button class="px-8 py-3 text-xs uppercase tracking-widest font-semibold border border-black rounded hover:bg-black hover:text-white transition-all w-full">See Work</button>
+          </div>
 
-        <section id="matchmaker">
-            <div class="glass match-container">
-                <h2 class="section-title" style="font-size: 3rem;">AI Editor Routing</h2>
-                <p class="section-subtitle">Tell us what you need, and our system will match you with the perfect specialized operator from our team.</p>
-                
-                <select id="clientRequirement" class="apple-input" style="font-weight: 600; cursor: pointer; text-align: center; max-width: 500px; margin: 0 auto 20px auto;">
-                    <option value="none" selected disabled>Select your video requirement...</option>
-                    <option value="saas">SaaS & UI Product Walkthroughs</option>
-                    <option value="shorts">High-Retention Viral Shorts/Reels</option>
-                    <option value="vsl">Cinematic Documentary / VSLs</option>
-                    <option value="gaming">Vlog & Gaming Cuts</option>
-                </select>
-                <br>
-                <button onclick="findMatch()" class="btn-primary" style="padding: 15px 40px; margin-bottom: 40px;">Scan Database</button>
-
-                <div id="editorResults" style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;"></div>
-
-                <div id="emailCaptureBox" style="display: none; margin-top: 40px; padding-top: 40px; border-top: 1px solid rgba(255,255,255,0.1);">
-                    <h3 style="margin-bottom: 20px; font-size: 1.8rem;">Confirm Allocation</h3>
-                    <form action="https://api.web3forms.com/submit" method="POST" style="display: flex; flex-direction: column; gap: 15px; align-items: center;">
-                        <input type="hidden" name="access_key" value="08b8a178-8bce-4a78-a3f3-4f248b5fec6d">
-                        <input type="hidden" name="subject" value="URGENT: New Client Selected an Editor!">
-                        <input type="hidden" name="Selected_Editor" id="formEditorName" value="">
-                        <input type="hidden" name="Client_Requirement" id="formClientReq" value="">
-                        
-                        <input type="email" name="Client_Email" placeholder="Enter your Email" class="apple-input" style="max-width: 400px;" required>
-                        <input type="text" name="Client_Company" placeholder="Your Name or Company" class="apple-input" style="max-width: 400px;" required>
-                        <button type="submit" class="btn-primary" style="width: 100%; max-width: 400px;">Dispatch to Agency HQ</button>
-                    </form>
-                </div>
+          <div class="glass-card p-10 rounded-3xl flex flex-col items-center text-center reveal delay-200 cursor-pointer group" onclick="openPortfolio('rohan')">
+            <h3 class="font-cinematic text-3xl font-bold text-[#111]">Rohan</h3>
+            <p class="text-xs text-gray-500 mt-2 font-bold uppercase tracking-widest mb-4">Graphic Designer</p>
+            <div class="flex items-center gap-1 text-yellow-500 mb-8">
+              <span class="text-xs font-bold text-gray-700 mr-1">4.8</span>
+              ★★★★★
             </div>
-        </section>
+            <button class="px-8 py-3 text-xs uppercase tracking-widest font-semibold border border-black rounded hover:bg-black hover:text-white transition-all w-full">See Work</button>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 500+ CLIENTS SECTION -->
+    <section class="bg-black text-white py-24 border-t border-gray-800">
+      <div class="max-w-6xl mx-auto px-6 text-center reveal">
+        <h2 class="font-cinematic text-4xl sm:text-5xl font-bold mb-6 tracking-wide">Trusted by 500+ Clients</h2>
+        <p class="text-gray-400 text-lg max-w-2xl mx-auto font-light leading-relaxed mb-12">
+          From independent creators to global brands, Pique Media has delivered over 500+ successful projects, driving millions of views and maximizing audience retention worldwide.
+        </p>
         
-        <section id="contact">
-            <div class="glass bento-card" style="text-align: center; max-width: 800px; width: 100%; padding: 60px 40px;">
-                <h2 class="section-title" style="font-size: 3.5rem;">Initialize Protocol</h2>
-                <p class="section-subtitle" style="margin-bottom: 40px;">Drop your coordinates or connect across our channels to deploy your campaign immediately.</p>
-                
-                <form action="https://api.web3forms.com/submit" method="POST" style="display: flex; flex-direction: column; gap: 20px; max-width: 500px; margin: 0 auto 40px auto;">
-                    <input type="hidden" name="access_key" value="08b8a178-8bce-4a78-a3f3-4f248b5fec6d">
-                    <input type="hidden" name="subject" value="General Inquiry from Pique Media">
-                    
-                    <div class="input-group">
-                        <label>Email Address</label>
-                        <input type="email" name="Email" placeholder="name@company.com" required class="apple-input">
-                    </div>
-                    <div class="input-group">
-                        <label>Phone / WhatsApp Number</label>
-                        <input type="tel" name="Phone" placeholder="+91 XXXXX XXXXX" required class="apple-input">
-                    </div>
-                    <button type="submit" class="btn-primary" style="width: 100%; margin-top: 10px;">Deploy Campaign</button>
-                </form>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto border-t border-white/10 pt-12">
+          <div>
+            <h4 class="font-cinematic text-4xl font-bold mb-2">500+</h4>
+            <p class="text-xs uppercase tracking-widest text-gray-500">Clients Scaled</p>
+          </div>
+          <div>
+            <h4 class="font-cinematic text-4xl font-bold mb-2">98%</h4>
+            <p class="text-xs uppercase tracking-widest text-gray-500">Retention Rate</p>
+          </div>
+          <div>
+            <h4 class="font-cinematic text-4xl font-bold mb-2">50M+</h4>
+            <p class="text-xs uppercase tracking-widest text-gray-500">Views Generated</p>
+          </div>
+          <div>
+            <h4 class="font-cinematic text-4xl font-bold mb-2">24/7</h4>
+            <p class="text-xs uppercase tracking-widest text-gray-500">Dedicated Support</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-                <div style="font-weight: 700; color: var(--text-muted); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 25px;">Or Instant Connect</div>
+    <!-- ABOUT & CONTACT -->
+    <section id="contact" class="max-w-5xl mx-auto px-6 py-32 reveal">
+      <div class="flex flex-col md:flex-row gap-16 items-center md:items-start">
+        <div class="flex-1 text-center md:text-left">
+          <h2 class="font-cinematic text-4xl sm:text-5xl font-bold text-[#111] tracking-wide mb-6">
+            Let's build something exceptional.
+          </h2>
+          <p class="text-gray-600 text-base font-light leading-relaxed mb-8">
+            Founded by <strong>Jeehan Mitra</strong> and <strong>Anmol Singh</strong>, <strong>Pique Media</strong> is more than just an editing agency. We are your creative partners. Whether you need high-paced shorts, compelling long-form videos, or complete brand identity design, our elite roster is ready to scale your content.
+          </p>
+        </div>
 
-                <div class="social-grid">
-                    <a href="https://www.linkedin.com/in/pique-media-622643409/" target="_blank" class="social-btn">LinkedIn Direct</a>
-                    <a href="https://discordapp.com/users/950408132201447496" target="_blank" class="social-btn">Discord Node</a>
-                </div>
-            </div>
-        </section>
+        <div class="flex-1 bg-white p-10 rounded-2xl border border-gray-200 shadow-sm w-full md:w-auto text-center md:text-left">
+          <h3 class="font-cinematic text-2xl font-bold mb-6">Get in Touch</h3>
+          <div class="mb-6">
+            <p class="text-xs uppercase tracking-widest text-gray-500 mb-1">Email Us</p>
+            <a href="mailto:wydanmol2012@gmail.com" class="text-lg font-medium hover:text-gray-600 transition-colors">wydanmol2012@gmail.com</a>
+          </div>
+          <div class="mb-8">
+            <p class="text-xs uppercase tracking-widest text-gray-500 mb-1">Call / WhatsApp</p>
+            <a href="https://wa.me/918005649879" target="_blank" class="text-lg font-medium hover:text-gray-600 transition-colors">+91 80056 49879</a>
+          </div>
+          <a href="https://wa.me/918005649879" target="_blank" class="inline-flex items-center justify-center gap-3 w-full py-4 bg-black text-white font-medium rounded text-sm hover:bg-gray-800 transition-all uppercase tracking-wide">
+            <span>Start a Conversation</span>
+          </a>
+        </div>
+      </div>
+    </section>
 
-        <footer style="text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.95rem; font-weight: 500;">
-            &copy; 2026 Pique Media. Built on Apple-grade logic.
-        </footer>
+    <footer class="border-t border-gray-200 py-12 text-center text-xs text-gray-500 font-medium tracking-widest uppercase reveal">
+      © <span id="year"></span> PIQUE MEDIA. FOUNDED BY JEEHAN MITRA & ANMOL SINGH.
+    </footer>
+
+  </div>
+
+  <!-- 3. MODAL -->
+  <div id="portfolio-modal" class="fixed inset-0 bg-[#F9F9F9] z-[100] overflow-y-auto opacity-0 pointer-events-none transform translate-y-10">
+    
+    <div class="sticky top-0 bg-[#F9F9F9]/95 backdrop-blur-md border-b border-gray-200 px-6 h-20 flex items-center justify-between z-50">
+      <span class="font-cinematic text-xl font-bold tracking-widest uppercase text-black" id="modal-title">Portfolio</span>
+      <button onclick="closePortfolio()" class="flex items-center gap-2 text-xs uppercase tracking-widest font-semibold px-5 py-2.5 rounded bg-black text-white hover:bg-gray-800 transition-all">
+        <span>Close</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+      </button>
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // Scroll Blur Logic
-            const scrollWrapper = document.getElementById('scroll-wrapper');
-            let scrollTimeout;
-            if(scrollWrapper) {
-                window.addEventListener('scroll', () => {
-                    scrollWrapper.style.transition = 'none';
-                    scrollWrapper.style.filter = 'blur(2px)';
-                    clearTimeout(scrollTimeout);
-                    scrollTimeout = setTimeout(() => {
-                        scrollWrapper.style.transition = 'filter 0.4s ease-out';
-                        scrollWrapper.style.filter = 'blur(0px)';
-                    }, 80);
-                });
-            }
-        });
+    <div class="max-w-6xl mx-auto px-6 py-12">
+      
+      <!-- HEMANT -->
+      <div id="portfolio-hemant" class="portfolio-section hidden">
+        <div class="mb-12 border-b border-gray-200 pb-10">
+          <h2 class="font-cinematic text-4xl font-bold text-[#111] mb-2">Hemant</h2>
+          <p class="text-gray-500 font-medium uppercase tracking-widest text-xs mb-4">Video Editor • 4.9/5 Rating</p>
+          <p class="text-gray-700 font-light leading-relaxed mb-6 max-w-3xl">Expert in high-retention short-form content. From fast-paced real estate edits to dynamic motion graphics, Hemant crafts visuals that keep the audience hooked till the very last second.</p>
+          <blockquote class="pl-4 border-l-2 border-black italic text-gray-600 text-sm max-w-2xl">"Hemant completely transformed our reels. Our retention rate doubled on the very first video!" <br><span class="font-semibold text-black not-italic mt-2 block">— Media Co.</span></blockquote>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+          <div class="aspect-[9/16] w-full bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+            <iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/5-V5XPHU1Vg" title="Hemant Edit 1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+          <div class="aspect-[9/16] w-full bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+            <iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/kGLTGWK--fE" title="Hemant Edit 2" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+          <div class="aspect-[9/16] w-full bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+            <iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/DAAZW8kSX1g" title="Hemant Edit 3" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+          <div class="aspect-[9/16] w-full bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+            <iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/cstftElT0Us" title="Hemant Edit 4" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
 
-        // Matchmaker Logic
-        const editorDB = [
-            { id: 1, name: "Ritesh", tags: ["saas", "ui"], exp: "SaaS Motion Expert", img: "https://i.ibb.co/b3bZg4z/image-82b76a.jpg" },
-            { id: 2, name: "Parth", tags: ["shorts", "gaming"], exp: "High-Retention Master", img: "https://i.ibb.co/YyKmxGZ/image-82b44a.jpg" },
-            { id: 3, name: "Aamir", tags: ["vsl", "documentary"], exp: "Cinematic Color & VSL", img: "https://i.ibb.co/VvzK2B5/image-82b3b2.jpg" }
-        ];
+      <!-- SANJAY -->
+      <div id="portfolio-sanjay" class="portfolio-section hidden">
+        <div class="mb-12 border-b border-gray-200 pb-10">
+          <h2 class="font-cinematic text-4xl font-bold text-[#111] mb-2">Sanjay</h2>
+          <p class="text-gray-500 font-medium uppercase tracking-widest text-xs mb-4">Video Editor • 4.8/5 Rating</p>
+          <p class="text-gray-700 font-light leading-relaxed mb-6 max-w-3xl">Master of dynamic talking-head videos. Sanjay seamlessly blends long-form storytelling with fast-paced vertical shorts to maximize viewer engagement across platforms.</p>
+          <blockquote class="pl-4 border-l-2 border-black italic text-gray-600 text-sm max-w-2xl">"Sanjay's pacing is unmatched. He knows exactly when to cut and when to let the scene breathe." <br><span class="font-semibold text-black not-italic mt-2 block">— Tech Creator</span></blockquote>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div class="md:col-span-2">
+            <div class="aspect-video w-full max-w-4xl mx-auto bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+              <iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/dUPtQXZJqQA" title="Sanjay Longform" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+          </div>
+          <div class="aspect-[9/16] w-full max-w-sm mx-auto bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+            <iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/b9Awmb6l9Ec" title="Sanjay Short 1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+          <div class="aspect-[9/16] w-full max-w-sm mx-auto bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+            <iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/jJO-5m7DmiQ" title="Sanjay Short 2" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
 
-        function findMatch() {
-            const req = document.getElementById('clientRequirement');
-            const resultsBox = document.getElementById('editorResults');
-            const emailBox = document.getElementById('emailCaptureBox');
-            
-            if(!req || !resultsBox || !emailBox) return;
+      <!-- KUSH -->
+      <div id="portfolio-kush" class="portfolio-section hidden">
+        <div class="mb-12 border-b border-gray-200 pb-10">
+          <h2 class="font-cinematic text-4xl font-bold text-[#111] mb-2">Kush</h2>
+          <p class="text-gray-500 font-medium uppercase tracking-widest text-xs mb-4">Video Editor • 5.0/5 Rating</p>
+          <p class="text-gray-700 font-light leading-relaxed mb-6 max-w-3xl">Highly reviewed for precision and creativity. Kush delivers exceptionally polished videos that elevate the brand's aesthetic and maximize viewer retention.</p>
+          <blockquote class="pl-4 border-l-2 border-black italic text-gray-600 text-sm max-w-2xl">"Absolutely premium edits. Kush has an incredible eye for detail, color grading, and aesthetics." <br><span class="font-semibold text-black not-italic mt-2 block">— Luxury Lifestyle Brand</span></blockquote>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="aspect-video w-full bg-gray-100 rounded-lg overflow-hidden border border-gray-200"><iframe class="w-full h-full" src="https://drive.google.com/file/d/17pdcHDbj6FHgpKqxvk8cuucgKcO87o4l/preview" allow="autoplay" allowfullscreen></iframe></div>
+          <div class="aspect-video w-full bg-gray-100 rounded-lg overflow-hidden border border-gray-200"><iframe class="w-full h-full" src="https://drive.google.com/file/d/1dd8Ef49KQmyy25Hh9N2dOGxou7ip69r_/preview" allow="autoplay" allowfullscreen></iframe></div>
+          <div class="aspect-video w-full bg-gray-100 rounded-lg overflow-hidden border border-gray-200"><iframe class="w-full h-full" src="https://drive.google.com/file/d/1XvP6bBAOE3W8qOrrly0_vuQtuClqinIC/preview" allow="autoplay" allowfullscreen></iframe></div>
+          <div class="aspect-video w-full bg-gray-100 rounded-lg overflow-hidden border border-gray-200"><iframe class="w-full h-full" src="https://drive.google.com/file/d/1kxr7L7gnSCWf5Y0P67mMyr58jRLIQVzo/preview" allow="autoplay" allowfullscreen></iframe></div>
+          <div class="aspect-video w-full bg-gray-100 rounded-lg overflow-hidden border border-gray-200"><iframe class="w-full h-full" src="https://drive.google.com/file/d/1d0AX-g8AsDth07NVP_ccy4v7602_ioie/preview" allow="autoplay" allowfullscreen></iframe></div>
+          <div class="aspect-video w-full bg-gray-100 rounded-lg overflow-hidden border border-gray-200"><iframe class="w-full h-full" src="https://drive.google.com/file/d/1RZrspluME5_h3svagmC_9D9LSZOduM0P/preview" allow="autoplay" allowfullscreen></iframe></div>
+        </div>
+      </div>
 
-            if(req.value === "none") { alert("Please select a video requirement first."); return; }
-            
-            resultsBox.innerHTML = "";
-            emailBox.style.display = "none";
-            
-            const matchedEditors = editorDB.filter(editor => editor.tags.includes(req.value));
-            
-            if(matchedEditors.length > 0) {
-                matchedEditors.forEach(ed => {
-                    resultsBox.innerHTML += `
-                        <div class="editor-result-card">
-                            <span class="tag-badge">98% Match</span>
-                            <img src="${ed.img}" class="editor-avatar" alt="editor">
-                            <h3 style="margin-bottom: 5px;">${ed.name}</h3>
-                            <p style="font-size: 0.9rem; color: #86868b; margin-bottom: 15px;">${ed.exp}</p>
-                            <button onclick="selectEditor('${ed.name}', '${req.value}')" class="btn-primary" style="padding: 10px 20px; font-size: 0.9rem;">Select Editor</button>
-                        </div>
-                    `;
-                });
-            } else {
-                resultsBox.innerHTML = "<p style='font-weight:600; color:var(--text-muted);'>Scanning... No exact match found right now, but our Lead Director will handle this.</p>";
-            }
+      <!-- AYUSH -->
+      <div id="portfolio-ayush" class="portfolio-section hidden">
+        <div class="mb-12 border-b border-gray-200 pb-10">
+          <h2 class="font-cinematic text-4xl font-bold text-[#111] mb-2">Ayush</h2>
+          <p class="text-gray-500 font-medium uppercase tracking-widest text-xs mb-4">2D Animator • 4.9/5 Rating</p>
+          <p class="text-gray-700 font-light leading-relaxed mb-6 max-w-3xl">Top-rated animator bringing ideas to life through fluid motion, vibrant illustrations, and captivating visual storytelling. Ayush transforms complex concepts into highly engaging visual experiences.</p>
+          <blockquote class="pl-4 border-l-2 border-black italic text-gray-600 text-sm max-w-2xl">"Ayush's animations added a whole new dimension to our brand identity. Truly top-tier work!" <br><span class="font-semibold text-black not-italic mt-2 block">— Startup Founder</span></blockquote>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="aspect-video w-full bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+            <iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/Or7hVlrWcNw" title="Ayush 1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+          <div class="aspect-video w-full bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+            <iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/mICqekEWd4Q" title="Ayush 2" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+          <div class="aspect-video w-full bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+            <iframe class="w-full h-full" src="https://www.youtube-nocookie.com/embed/-mTfg77DpE8" title="Ayush 3" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+
+      <!-- SATYAM -->
+      <div id="portfolio-satyam" class="portfolio-section hidden">
+        <div class="mb-12 border-b border-gray-200 pb-10">
+          <h2 class="font-cinematic text-4xl font-bold text-[#111] mb-2">Satyam</h2>
+          <p class="text-gray-500 font-medium uppercase tracking-widest text-xs mb-4">Video Editor • 4.7/5 Rating</p>
+          <p class="text-gray-700 font-light leading-relaxed mb-6 max-w-3xl">Skilled editor specializing in clean cuts and engaging narrative flow. Satyam ensures every project maintains high viewer retention and aesthetic quality from start to finish.</p>
+          <blockquote class="pl-4 border-l-2 border-black italic text-gray-600 text-sm max-w-2xl">"Super reliable and creative. Satyam delivered exactly what we needed, ahead of schedule." <br><span class="font-semibold text-black not-italic mt-2 block">— Marketing Agency</span></blockquote>
+        </div>
+        <div class="max-w-3xl mx-auto">
+          <div class="aspect-video w-full bg-gray-100 rounded-lg overflow-hidden border border-gray-200">
+            <iframe class="w-full h-full" src="https://drive.google.com/file/d/1F5lPsJetrPCDxEq8iv_quWXqiImkUWqc/preview" allow="autoplay" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROHAN -->
+      <div id="portfolio-rohan" class="portfolio-section hidden">
+        <div class="mb-12 border-b border-gray-200 pb-10">
+          <h2 class="font-cinematic text-4xl font-bold text-[#111] mb-2">Rohan</h2>
+          <p class="text-gray-500 font-medium uppercase tracking-widest text-xs mb-4">Graphic Designer • 4.8/5 Rating</p>
+          <p class="text-gray-700 font-light leading-relaxed mb-6 max-w-3xl">Creative Graphic Designer specializing in high-CTR thumbnails, brand identity, and visually striking marketing assets. Rohan's designs ensure your content gets the click it deserves.</p>
+          <blockquote class="pl-4 border-l-2 border-black italic text-gray-600 text-sm max-w-2xl">"Rohan's designs are eye-catching and professional. Our click-through rates skyrocketed after using his thumbnails!" <br><span class="font-semibold text-black not-italic mt-2 block">— E-com Brand</span></blockquote>
+        </div>
+        <div class="w-full bg-gray-100 rounded-lg overflow-hidden border border-gray-200" style="height: 60vh; min-height: 500px;">
+          <iframe class="w-full h-full" src="https://drive.google.com/embeddedfolderview?id=1gOn685InFwa3LOsx6J1SQ1-4T-uA2EM5#grid" allowfullscreen></iframe>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    window.addEventListener('load', () => {
+      const introScreen = document.getElementById('intro-screen');
+      const mainContent = document.getElementById('main-content');
+      
+      setTimeout(() => {
+        introScreen.style.opacity = '0';
+        introScreen.style.pointerEvents = 'none';
+        mainContent.classList.add('visible');
+        
+        setTimeout(() => {
+          introScreen.remove();
+          checkReveal(); 
+        }, 1000);
+      }, 2600);
+
+      document.getElementById('year').textContent = new Date().getFullYear();
+    });
+
+    function checkReveal() {
+      const reveals = document.querySelectorAll('.reveal');
+      const windowHeight = window.innerHeight;
+      const elementVisible = 100;
+      reveals.forEach((reveal) => {
+        const elementTop = reveal.getBoundingClientRect().top;
+        if (elementTop < windowHeight - elementVisible) {
+          reveal.classList.add('active');
         }
+      });
+    }
+    window.addEventListener('scroll', checkReveal);
 
-        function selectEditor(name, requirement) {
-            document.getElementById('formEditorName').value = name;
-            document.getElementById('formClientReq').value = requirement;
-            const emailBox = document.getElementById('emailCaptureBox');
-            if(emailBox) {
-                emailBox.style.display = "block";
-                emailBox.scrollIntoView({ behavior: 'smooth' });
-            }
+    function openPortfolio(editorId) {
+      document.querySelectorAll('.portfolio-section').forEach(el => el.classList.add('hidden'));
+      document.getElementById('portfolio-' + editorId).classList.remove('hidden');
+      
+      const modal = document.getElementById('portfolio-modal');
+      modal.classList.add('modal-active');
+      document.body.style.overflow = 'hidden';
+      
+      const titleName = editorId.charAt(0).toUpperCase() + editorId.slice(1);
+      document.getElementById('modal-title').innerText = titleName + "'s Portfolio";
+    }
+
+    function closePortfolio() {
+      const modal = document.getElementById('portfolio-modal');
+      modal.classList.remove('modal-active');
+      document.body.style.overflow = '';
+
+      setTimeout(() => {
+        const activeSection = document.querySelector('.portfolio-section:not(.hidden)');
+        if(activeSection) {
+          const iframes = activeSection.querySelectorAll('iframe');
+          iframes.forEach(iframe => {
+            let currentSrc = iframe.src;
+            iframe.src = currentSrc;
+          });
         }
-    </script>
+      }, 300);
+    }
+  </script>
 </body>
 </html>
